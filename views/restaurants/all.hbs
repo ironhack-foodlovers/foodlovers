@@ -1,0 +1,21 @@
+<h1>Liste aller Restaurants</h1>
+
+<a href="/all/add">Click here to add a new Restaurant</a>
+
+{{#each restaurants}}
+
+	<h1>{{name}}</h1>
+
+	<h4>Adresse:</h4>
+    <p>{{street}} {{houseNumber}}</p>
+    <p>{{zipCode}}, {{city}}</p>
+    <p>{{country}}</p>
+
+    <h4>Kontakt:</h4>
+    <p>{{telephone}}</p>
+    <p>{{url}}</p>
+
+    <h4>Beschreibung:</h4>
+    <p>{{description}}</p>
+
+{{/each}}
