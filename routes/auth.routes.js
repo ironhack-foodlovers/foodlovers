@@ -37,12 +37,18 @@ router.post('/signup', (req, res, next) => {
 						console.log(createdUser)
 						// if we want to log the user in using passport
 						// req.login()
-						res.redirect('/login')
+						res.redirect('/logout')
 					})
 					.catch(err => next(err))
 			}
 		})
 });
+
+router.get('/logout', (req, res, next) => {
+	req.logout();
+	res.redirect('/')
+});
+
 
 
 
