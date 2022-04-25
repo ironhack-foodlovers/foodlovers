@@ -3,7 +3,17 @@ const User = require('../models/User.model')
 const bcrypt = require('bcrypt')
 const passport = require('passport')
 
-/* GET home page */
+router.get("/login", (req, res, next) => {
+    res.render("auth/login");
+  });
+
+  router.post('/login', passport.authenticate('local', {
+	successRedirect: '/',
+	failureRedirect: '/login'
+}));
+
+
+
 router.get("/signup", (req, res, next) => {
   res.render("auth/signup");
 });
@@ -34,8 +44,6 @@ router.post('/signup', (req, res, next) => {
 		})
 });
 
-router.get("/login", (req, res, next) => {
-    res.render("auth/login");
-  });
+
 
 module.exports = router;
