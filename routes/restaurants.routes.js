@@ -2,12 +2,16 @@ const router = require("express").Router();
 const Restaurant = require('../models/Restaurant');
 const User = require('../models/User');
 
+
+const isLoggedOut = require("../middleware/isLoggedOut");
+const isLoggedIn = require("../middleware/isLoggedIn");
+
 // Display site - "all restaurants"
-router.get('/all', (req, res, next) => {
+router.get('/all', isLoggedIn, (req, res, next) => {
     Restaurant.find()
     .then(restaurantFromDB => {
         console.log('Restaurants werden angezeigt');
-        res.render('restaurants/all', {restaurants: restaurantFromDB})
+        res.render('restaurants/all', {restaurants: restaurantFromDB, status: false})
     })
     .catch(err => {
         next(err)
