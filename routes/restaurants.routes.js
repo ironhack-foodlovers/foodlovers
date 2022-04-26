@@ -49,14 +49,28 @@ router.post('/all', (req, res, next) => {
 
 router.get("/my-restaurants", (req, res, next) => {
 
-    const userId = req.session.passport.user 
+    const userId = req.user._id
 
- //   console.log(req.session.user)
+console.log(userId)
 
- User.findOne({ userId }).then((found) => { 
+User.findById(userId)
+.populate('restaurants')
+.then(userFromDB => {
+    console.log('Restaurants werden angezeigt');
+    res.render('restaurants/my-restaurants', {restaurants: userFromDB.restaurants})
+})
+.catch(err => {
+    next(err)
+})
 
-    res.render("restaurants/my-restaurants")
- })   
+/*  Restaurant.find()
+ .then(restaurantFromDB => {
+     console.log('Restaurants werden angezeigt');
+     res.render('restaurants/my-restaurants', {restaurants: restaurantFromDB, status: false})
+ })
+ .catch(err => {
+     next(err)
+ }) */
 });
 
 // Edit a restaurant in global db
