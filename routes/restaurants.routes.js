@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Restaurant = require('../models/Restaurant');
+const User = require('../models/User');
 
 // Display site - "all restaurants"
 router.get('/all', (req, res, next) => {
@@ -42,7 +43,31 @@ router.post('/all', (req, res, next) => {
     })
 })
 
-module.exports = router;
+
+
+
+router.get("/my-restaurants", (req, res, next) => {
+
+    const userId = req.session.user._id 
+
+ //   console.log(req.session.user)
+
+ User.findOne({ userId }).then((found) => { 
+
+    res.render("restaurants/my-restaurants", { user: userId})
+ })
+
+/*   User.find({_id: userId})
+	.then(userFromDB => {
+		
+        res.render("restaurants/my-restaurants", {users: user: userId})
+	}) */
+   
+  });
+
+
+
+
 
 // Edit a restaurant in global db
 router.get('/all/edit/:id', (req, res, next) => {
@@ -79,3 +104,5 @@ router.post('/all/edit/:id', (req, res, next) => {
     next(err)
     })
 })
+
+module.exports = router;
