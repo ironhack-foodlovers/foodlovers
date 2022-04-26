@@ -1,0 +1,52 @@
+{{#with restaurant}}
+
+<h1>Edit: {{name}}</h1>
+
+<form action="/all/edit/{{_id}}" method="POST">
+    <ul>
+        <li>
+            <label for="">Restaurant name: </label>	
+            <input type="text" name="name" value="{{name}}">
+        </li>
+        <li>
+            <label for="">Street: </label>	
+            <input type="text" name="street" value="{{street}}">
+        </li>
+        <li>
+            <label for="">Num: </label>	
+            <input type="number" name="houseNumber" value="{{houseNumber}}">
+        </li>
+        <li>
+            <label for="">ZIP: </label>
+            <input type="text" name="zipCode" value="{{zipCode}}">
+        </li>
+        <li>
+            <label for="">City: </label>	
+            <input type="text" name="city" value="{{city}}">
+        </li>
+        <li>
+            <label for="">Country: </label>	
+            <input type="text" name="country" value="{{country}}">
+        </li>
+        <li>
+            <label for="">Phone: </label>	
+            <input type="text" name="telephone" value="{{telephone}}">
+        </li>
+        <li>
+            <label for="">Website: </label>	
+            <input type="url" name="url" value="{{url}}">
+        </li>
+        <li>
+            <label for="">Labels: </label>	
+            <input type="text" name="tags" value="{{tags}}">
+        </li>
+        <li>
+            <label for="">Description: </label>	
+            <input type="text" name="description"value="{{description}}">
+        </li>
+    </ul>
+	<button type="submit">Save</button>
+</form>
+
+{{/with}}
+

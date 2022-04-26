@@ -1,36 +1,48 @@
 <h1>Add a new Restaurant</h1>
 <form action="/all" method="POST">
-	<label for="">Restaurant name: </label>	
-	<input type="text" name="name">
+	<ul>
+        <li>
+            <label for="">Restaurant name: </label>	
+            <input type="text" name="name">
+        </li>
+        <li>
+            <label for="">Street: </label>	
+            <input type="text" name="street">
+        </li>
+        <li>
+            <label for="">Num: </label>	
+            <input type="number" name="houseNumber">
+        </li>
+        <li>
+            <label for="">ZIP: </label>
+            <input type="text" name="zipCode">
+        </li>
+        <li>
+            <label for="">City: </label>	
+            <input type="text" name="city">
+        </li>
+        <li>
+            <label for="">Country: </label>	
+            <input type="text" name="country">
+        </li>
+        <li>
+            <label for="">Phone: </label>	
+            <input type="text" name="telephone">
+        </li>
+        <li>
+            <label for="">Website: </label>	
+            <input type="url" name="url">
+        </li>
+        <li>
+            <label for="">Labels: </label>	
+            <input type="text" name="tags">
+        </li>
+        <li>
+            <label for="">Description: </label>	
+            <input type="text" name="description">
+        </li>
+    </ul>
 
-	<label for="">Street: </label>	
-	<input type="text" name="street">
-	
-	<label for="">Num: </label>	
-	<input type="number" name="houseNumber">
 
-    <label for="">ZIP: </label>
-    <input type="text" name="zipCode">
-
-    <label for="">City: </label>	
-	<input type="text" name="city">
-
-    <label for="">Country: </label>	
-	<input type="text" name="country">
-
-    <label for="">Phone: </label>	
-	<input type="text" name="telephone">
-
-    <label for="">Website: </label>	
-	<input type="url" name="url">
-
-    <label for="">Labels: </label>	
-	<input type="text" name="tags">	
-
-    <label for="">Description: </label>	
-	<input type="text" name="description">	
-
-
-	<button type="submit">Add new restaurant</button>
+	<button type="submit">Add</button>
 </form>
-

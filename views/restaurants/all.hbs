@@ -1,6 +1,8 @@
 <h1>Liste aller Restaurants</h1>
 
-<a href="/all/add">Click here to add a new Restaurant</a>
+<button onclick="window.location.href = '/all/add';">Add new Restaurant</button>
+
+<hr>
 
 {{#each restaurants}}
 
@@ -17,5 +19,9 @@
 
     <h4>Beschreibung:</h4>
     <p>{{description}}</p>
+
+    <button onclick="window.location.href = '/all/edit/{{_id}}';">Edit</button>
+    <button onclick="window.location.href = '/all/delete/{{_id}}';">Delete</button>
+<hr>
 
 {{/each}}
