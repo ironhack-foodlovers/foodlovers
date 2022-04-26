@@ -48,27 +48,23 @@ router.post('/all', (req, res, next) => {
 
 router.get("/my-restaurants", (req, res, next) => {
 
-    const userId = req.session.user._id 
+   // const userId = req.session.user.id 
 
- //   console.log(req.session.user)
+  console.log(req.session.user)
 
- User.findOne({ userId }).then((found) => { 
+/*  User.findOne({ userId }).then((found) => { 
 
     res.render("restaurants/my-restaurants", { user: userId})
- })
+ }) */
 
-/*   User.find({_id: userId})
-	.then(userFromDB => {
-		
-        res.render("restaurants/my-restaurants", {users: user: userId})
-	}) */
+
    
   });
 
 
 
 
-
+/* 
 // Edit a restaurant in global db
 router.get('/all/edit/:id', (req, res, next) => {
     const id = req.params.id
@@ -104,5 +100,5 @@ router.post('/all/edit/:id', (req, res, next) => {
     next(err)
     })
 })
-
+ */
 module.exports = router;

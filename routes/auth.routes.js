@@ -7,11 +7,12 @@ const isLoggedOut = require("../middleware/isLoggedOut");
 const isLoggedIn = require("../middleware/isLoggedIn");
 
 router.get("/login", isLoggedOut, (req, res, next) => {
+    
     res.render("auth/login");
   });
 
   router.post('/login', isLoggedOut, passport.authenticate('local', {
-	successRedirect: '/my-restaurants',
+	successRedirect: '/',
 	failureRedirect: '/login'
 }));
 
@@ -55,7 +56,7 @@ router.post("/signup", isLoggedOut, (req, res, next) => {
                     
 						// if we want to log the user in using passport
 						// req.login()
-						res.redirect('/my-restaurants')
+						res.redirect('/')
 					})
 					.catch(err => next(err))
 			}
