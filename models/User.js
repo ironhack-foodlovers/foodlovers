@@ -8,7 +8,16 @@ const userSchema = new Schema(
       // unique: true -> Ideally, should be unique, but its up to you
     },
     password: String,
-  },
+  }, 
+  
+  {
+restaurants: [
+  {
+      type: Schema.Types.ObjectId,
+      ref: 'Restaurant'
+  }
+]}
+,
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
     timestamps: true,

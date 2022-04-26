@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Restaurant = require('../models/Restaurant');
+const User = require('../models/User');
 
 router.get('/all', (req, res, next) => {
     console.log('TERERSDFSDFDS');
@@ -44,7 +45,22 @@ router.post('/all', (req, res, next) => {
 
 
 router.get("/my-restaurants", (req, res, next) => {
-    res.render("restaurants/my-restaurants");
+
+    const userId = req.session.user._id 
+
+ //   console.log(req.session.user)
+
+ User.findOne({ userId }).then((found) => { 
+
+    res.render("restaurants/my-restaurants", { user: userId})
+ })
+
+/*   User.find({_id: userId})
+	.then(userFromDB => {
+		
+        res.render("restaurants/my-restaurants", {users: user: userId})
+	}) */
+   
   });
 
 
