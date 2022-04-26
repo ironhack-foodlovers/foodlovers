@@ -43,9 +43,6 @@ router.post('/all', (req, res, next) => {
     })
 })
 
-
-
-
 router.get("/my-restaurants", (req, res, next) => {
 
     const userId = req.session.user._id 
@@ -55,19 +52,8 @@ router.get("/my-restaurants", (req, res, next) => {
  User.findOne({ userId }).then((found) => { 
 
     res.render("restaurants/my-restaurants", { user: userId})
- })
-
-/*   User.find({_id: userId})
-	.then(userFromDB => {
-		
-        res.render("restaurants/my-restaurants", {users: user: userId})
-	}) */
-   
-  });
-
-
-
-
+ })   
+});
 
 // Edit a restaurant in global db
 router.get('/all/edit/:id', (req, res, next) => {
@@ -102,6 +88,29 @@ router.post('/all/edit/:id', (req, res, next) => {
     })
     .catch(err => {
     next(err)
+    })
+})
+
+router.get('/all/add-favorite/:id', (req, res, next) => {
+    const userId = req.session.user._id
+    const restaurantId = req.params.id
+
+    console.log(`User ID: ${userId}`);
+    console.log(`Restaurant ID: ${restaurantId}`);
+
+    Restaurant.findById(restaurantId)
+    .then(restaurantFromDB => {
+        
+        User.findByIdAndUpdate(userId, {
+            $push: {restaurants: restaurantFromDB} 
+        })
+        .then((updatedUser)=>{
+            console.log(restaurantFromDB);
+            console.log(updatedUser);
+        })
+        .catch(err => {
+            next(err)
+        })
     })
 })
 
