@@ -45,13 +45,13 @@ router.post('/all', (req, res, next) => {
 
 router.get("/my-restaurants", (req, res, next) => {
 
-    const userId = req.session.user._id 
+    const userId = req.session.passport.user 
 
  //   console.log(req.session.user)
 
  User.findOne({ userId }).then((found) => { 
 
-    res.render("restaurants/my-restaurants", { user: userId})
+    res.render("restaurants/my-restaurants")
  })   
 });
 
@@ -92,12 +92,14 @@ router.post('/all/edit/:id', (req, res, next) => {
 })
 
 router.get('/all/add-favorite/:id', (req, res, next) => {
-    const userId = req.session.user._id
+
+   
+    const userId = req.session.passport.user
     const restaurantId = req.params.id
 
-    console.log(`User ID: ${userId}`);
+  /*   console.log(`User ID: ${userId}`);
     console.log(`Restaurant ID: ${restaurantId}`);
-
+ */
     Restaurant.findById(restaurantId)
     .then(restaurantFromDB => {
         
@@ -105,8 +107,9 @@ router.get('/all/add-favorite/:id', (req, res, next) => {
             $push: {restaurants: restaurantFromDB} 
         })
         .then((updatedUser)=>{
-            console.log(restaurantFromDB);
-            console.log(updatedUser);
+           /*  console.log(restaurantFromDB);
+            console.log(updatedUser); */
+            res.render('restaurants/my-restaurants')
         })
         .catch(err => {
             next(err)
