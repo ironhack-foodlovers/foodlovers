@@ -115,10 +115,9 @@ router.get('/all/add-favorite/:id', (req, res, next) => {
     const user = req.user
     const restaurantId = req.params.id
 
-if(!user.restaurants.includes(restaurantId)) {
-
     console.log(user.restaurants)
-    console.log(restaurantId)
+
+if(!user.restaurants.includes(restaurantId)) {
 
 
     Restaurant.findById(restaurantId)
@@ -144,11 +143,9 @@ if(!user.restaurants.includes(restaurantId)) {
 
 } else {
 
-    
-    console.log(user.restaurants)
-    console.log(restaurantId)
-
-   console.log("hast du schon")
+    res.redirect('/all')
+   console.log("Dieses restuarnat ist schon in der db")
+  
 }
 })
 
