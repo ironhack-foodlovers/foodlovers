@@ -112,24 +112,44 @@ router.post('/all/edit/:id', (req, res, next) => {
 // Add a restaurant to the users favorite lis ('my-restaurants')
 router.get('/all/add-favorite/:id', (req, res, next) => {
    
-    const userId = req.session.passport.user
+    const user = req.user
     const restaurantId = req.params.id
+
+if(!user.restaurants.includes(restaurantId)) {
+
+    console.log(user.restaurants)
+    console.log(restaurantId)
+
 
     Restaurant.findById(restaurantId)
     .then(restaurantFromDB => {
 
 
- User.findByIdAndUpdate(userId, {
+            User.findByIdAndUpdate(user._id, {
 
-            $push: {restaurants: restaurantFromDB} 
-        })
-        .then((updatedUser)=>{
-            res.redirect('/my-restaurants')
-        })
-        .catch(err => {
-            next(err)
-        })
+                $push: {restaurants: restaurantFromDB} 
+            })
+            .then((updatedUser)=>{
+               
+                res.redirect('/my-restaurants')
+            })
+            .catch(err => {
+                next(err)
+            })
+            
+     
+
+
     })
+
+} else {
+
+    
+    console.log(user.restaurants)
+    console.log(restaurantId)
+
+   console.log("hast du schon")
+}
 })
 
 router.get('/all/delete/:id', (req, res, next) =>{
