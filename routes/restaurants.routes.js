@@ -117,12 +117,14 @@ router.get('/all/add-favorite/:id', (req, res, next) => {
 
     Restaurant.findById(restaurantId)
     .then(restaurantFromDB => {
-        
-        User.findByIdAndUpdate(userId, {
+
+
+ User.findByIdAndUpdate(userId, {
+
             $push: {restaurants: restaurantFromDB} 
         })
         .then((updatedUser)=>{
-            res.render('restaurants/my-restaurants')
+            res.redirect('/my-restaurants')
         })
         .catch(err => {
             next(err)
@@ -135,6 +137,48 @@ router.get('/all/delete/:id', (req, res, next) =>{
     Restaurant.findByIdAndDelete(id)
     .then (() => {
         res.redirect('/all')
+    })
+    .catch(err => {
+        next(err)
+    })
+})
+
+router.get('/all/remove/:id', (req, res, next) =>{
+    const userId = req.user._id
+
+    const restaurantId = req.params.id
+
+   // console.log(req.user.restaurants)
+    User.findById(userId)
+    .then(userFromDB => {
+
+       const filteredRestaurants =  userFromDB.restaurants.filter((restaurant) => {
+
+            if(restaurant.toString() === restaurantId) {
+             return false
+            } else {
+                return true
+            }
+    
+        })
+
+        console.log(filteredRestaurants)
+
+        userFromDB.restaurants = filteredRestaurants
+
+        userFromDB.save()
+
+        .then(savedObject => {
+            console.log(savedObject)
+            res.redirect('/my-restaurants')
+        })
+
+      /*   User.findById(userId, {
+
+            $pull: {restaurants: userFromDB.restaurants} 
+        }) */
+    
+       
     })
     .catch(err => {
         next(err)
