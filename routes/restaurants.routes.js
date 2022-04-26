@@ -6,7 +6,6 @@ const User = require('../models/User');
 router.get('/all', (req, res, next) => {
     Restaurant.find()
     .then(restaurantFromDB => {
-        console.log('Restaurants werden angezeigt');
         res.render('restaurants/all', {restaurants: restaurantFromDB})
     })
     .catch(err => {
@@ -43,6 +42,7 @@ router.post('/all', (req, res, next) => {
     })
 })
 
+// ???
 router.get("/my-restaurants", (req, res, next) => {
 
     const userId = req.session.passport.user 
@@ -112,6 +112,7 @@ router.get('/all/add-favorite/:id', (req, res, next) => {
     })
 })
 
+// Delete a restaurant
 router.get('/all/delete/:id', (req, res, next) =>{
     const id = req.params.id
     Restaurant.findByIdAndDelete(id)

@@ -52,8 +52,8 @@ router.post("/signup", isLoggedOut, (req, res, next) => {
 				User.create({ username, password: hash, restaurants})
 					.then(createdUser => {
 						
-                        req.session.user = createdUser;
-                       // console.log( req.session.user)
+            req.session.passport = createdUser._id;
+            // console.log( req.session.user)
                     
 						// if we want to log the user in using passport
 						// req.login()
