@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const User = require('../models/User.model')
+const User = require('../models/User')
 const bcrypt = require('bcrypt')
 const passport = require('passport')
 
@@ -8,7 +8,7 @@ router.get("/login", (req, res, next) => {
   });
 
   router.post('/login', passport.authenticate('local', {
-	successRedirect: '/',
+	successRedirect: '/my-restaurants',
 	failureRedirect: '/login'
 }));
 
@@ -37,7 +37,7 @@ router.post('/signup', (req, res, next) => {
 						console.log(createdUser)
 						// if we want to log the user in using passport
 						// req.login()
-						res.redirect('/logout')
+						res.redirect('restaurants/my-restaurants')
 					})
 					.catch(err => next(err))
 			}

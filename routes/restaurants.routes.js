@@ -41,4 +41,11 @@ router.post('/all', (req, res, next) => {
     })
 })
 
+
+
+router.get("/my-restaurants", (req, res, next) => {
+    res.render("restaurants/my-restaurants");
+  });
+
+
 module.exports = router;

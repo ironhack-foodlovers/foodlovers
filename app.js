@@ -38,7 +38,7 @@ app.use(
 
 // passport config
 
-const User = require('./models/User.model')
+const User = require('./models/User')
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 
