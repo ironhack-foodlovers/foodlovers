@@ -1,6 +1,11 @@
 const router = require("express").Router();
 const Restaurant = require('../models/Restaurant');
 const User = require('../models/User');
+const axios = require('axios').default;
+
+const mapBoxAccessToken = 'pk.eyJ1IjoibWlzdHJhbGdyYXVlc3RlIiwiYSI6ImNsMmc2eGNsczAxNDczYnRwOXUyejd4OW4ifQ.2M96pYRBue81QqgxkqCjGw'
+
+
 
  
 const newTags = [{  name: 'High Class'}, { name: 'Superior Breakfast'} , {  name: 'Craving Comfort Food'},
@@ -113,27 +118,46 @@ router.get('/all/add', (req, res, next) => {
 router.post('/all',  isLoggedIn, (req, res, next) => {
     const {name, street, houseNumber, zipCode, city, country, telephone, url, tags, description} = req.body
 
-    Restaurant.create({
-        name: name,
-        street: street,
-        houseNumber: houseNumber,
-        zipCode: zipCode,
-        city: city,
-        country: country,
-        telephone: telephone,
-        url: url,
-        tags: tags,
-        description: description
-      })
-    .then(restaurantFromDB => {
-    
-    res.redirect('/all')
+    // take the individual address information and turn into URL-encoded UTF-8 string
+    let restaurantaddress = encodeURI(`${street} ${houseNumber} ${zipCode} ${city} ${country}`)
+
+    // request the forward geocoding api from mapbox & create the restaurant with the geo location
+    axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${restaurantaddress}.json?access_token=${mapBoxAccessToken}`)
+    .then(responseFromApi => {
+        console.log(responseFromApi.data.features[0].center)
+        const longLatRestaurant = responseFromApi.data.features[0].center
+
+        Restaurant.create({
+            name: name,
+            street: street,
+            houseNumber: houseNumber,
+            zipCode: zipCode,
+            city: city,
+            country: country,
+            geoCoordinates: longLatRestaurant,
+            telephone: telephone,
+            url: url,
+            tags: tags,
+            description: description
+          })
+        .then(restaurantFromDB => {
+            console.log(restaurantFromDB);
+            res.redirect('/all')
+        })
+        .catch(err => {
+        next(err)
+        })
     })
-    .catch(err => {
-    next(err)
-    })
+    .catch(error => console.log(error))
 })
 
+
+router.get("/my-restaurants", (req, res, next) => {
+    const userId = req.session.passport.user 
+    User.findOne({ userId }).then((found) => { 
+    res.render("restaurants/my-restaurants")
+ })   
+});
 
 // Edit a restaurant in global db
 router.get('/all/edit/:id',  isLoggedIn, (req, res, next) => { 
@@ -158,23 +182,35 @@ router.get('/all/edit/:id',  isLoggedIn, (req, res, next) => {
 router.post('/all/edit/:id',  isLoggedIn, (req, res, next) => {
     const {name, street, houseNumber, zipCode, city, country, telephone, url, tags, description} = req.body
     const id = req.params.id
-    Restaurant.findByIdAndUpdate(id, {
-        name: name,
-        street: street,
-        houseNumber: houseNumber,
-        zipCode: zipCode,
-        city: city,
-        country: country,
-        telephone: telephone,
-        url: url,
-        tags: tags,
-        description: description
-      }, { new: true })
-    .then( () => {
-        res.redirect('/all')
-    })
-    .catch(err => {
-    next(err)
+    
+    // take the individual address information and turn into URL-encoded UTF-8 string
+    let restaurantaddress = encodeURI(`${street} ${houseNumber} ${zipCode} ${city} ${country}`)
+
+    // request the forward geocoding api from mapbox & create the restaurant with the geo location
+    axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${restaurantaddress}.json?access_token=${mapBoxAccessToken}`)
+    .then(responseFromApi => {
+        console.log(responseFromApi.data.features[0].center)
+        const longLatRestaurant = responseFromApi.data.features[0].center
+
+        Restaurant.findByIdAndUpdate(id, {
+            name: name,
+            street: street,
+            houseNumber: houseNumber,
+            zipCode: zipCode,
+            city: city,
+            country: country,
+            geoCoordinates: longLatRestaurant,
+            telephone: telephone,
+            url: url,
+            tags: tags,
+            description: description
+        }, { new: true })
+        .then( () => {
+            res.redirect('/all')
+        })
+        .catch(err => {
+        next(err)
+        })  
     })
 })
 
@@ -225,7 +261,10 @@ if(!user.restaurants.includes(restaurantId)) {
 }
 })
 
+
+// Delete a restaurant
 router.get('/all/delete/:id',  isLoggedIn, (req, res, next) =>{
+
     const id = req.params.id
     Restaurant.findByIdAndDelete(id)
     .then (() => {
@@ -235,6 +274,19 @@ router.get('/all/delete/:id',  isLoggedIn, (req, res, next) =>{
         next(err)
     })
 })
+
+// Get the restaurant data incl. the coordinates in a json format
+router.get('/all/restaurant-data', (req, res, next) => {
+
+    Restaurant.find()
+    .then(restaurants => {
+        res.json(restaurants)
+    })
+    .catch(err => {
+        next(err)
+    })
+})
+
 
 router.get('/all/remove/:id',  isLoggedIn, (req, res, next) =>{
     const userId = req.user._id
@@ -265,18 +317,10 @@ router.get('/all/remove/:id',  isLoggedIn, (req, res, next) =>{
             console.log(savedObject)
             res.redirect('/my-restaurants')
         })
-
-      /*   User.findById(userId, {
-
-            $pull: {restaurants: userFromDB.restaurants} 
-        }) */
-    
-       
     })
     .catch(err => {
         next(err)
     })
 })
-
 
 module.exports = router;

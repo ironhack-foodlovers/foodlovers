@@ -2,7 +2,7 @@
 
 <button onclick="window.location.href = '/all/add';">Add new Restaurant</button>
 
-<hr>
+<hr />
 
 {{#if message}}
 		<p>{{message}}</p>
@@ -25,17 +25,16 @@
 {{#each restaurants}}
 
 
+<h1>{{name}}</h1>
 
-	<h1>{{name}}</h1>
+  <h4>Adresse:</h4>
+  <p>{{street}} {{houseNumber}}</p>
+  <p>{{zipCode}}, {{city}}</p>
+  <p>{{country}}</p>
 
-	<h4>Adresse:</h4>
-    <p>{{street}} {{houseNumber}}</p>
-    <p>{{zipCode}}, {{city}}</p>
-    <p>{{country}}</p>
-
-    <h4>Kontakt:</h4>
-    <p>{{telephone}}</p>
-    <p>{{url}}</p>
+  <h4>Kontakt:</h4>
+  <p>{{telephone}}</p>
+  <p>{{url}}</p>
 
  <h4>Tags:</h4>
 {{#each tags}}
@@ -46,10 +45,24 @@
     <h4>Beschreibung:</h4>
     <p>{{description}}</p>
 
-    <button onclick="window.location.href = '/all/edit/{{_id}}';">Edit</button>
-    <button onclick="window.location.href = '/all/delete/{{_id}}';">Delete</button>
-    <button onclick="window.location.href = '/all/add-favorite/{{_id}}';">Add to Favorites</button>
-<hr>
+
+  <button onclick="window.location.href = '/all/edit/{{_id}}';">Edit</button>
+  <button
+    onclick="window.location.href = '/all/delete/{{_id}}';"
+  >Delete</button>
+  <button onclick="window.location.href = '/all/add-favorite/{{_id}}';">Add to
+    Favorites</button>
+  <hr />
 
 {{/each}}
+
+
+<hr />
+
+{{!-- -------------------------------------------Map Start-------------------------------------------- --}}
+
+<div id='map' style='width: 75vw; height: 60vh;'></div>	
+<script src="/js/map-all-restaurants.js"></script>
+
+{{!-- -------------------------------------------Map End-------------------------------------------- --}}
 

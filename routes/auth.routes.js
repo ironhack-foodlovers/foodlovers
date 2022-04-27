@@ -45,9 +45,11 @@ router.post("/signup", isLoggedOut, (req, res, next) => {
 			} else {
 				// we can use that username
 				// and hash the password
+        
 				const salt = bcrypt.genSaltSync()
 				const hash = bcrypt.hashSync(password, salt)
 				const restaurants = []
+        
 				// create the user
         User.create({ username, password: hash })
         .then(createdUser => {
