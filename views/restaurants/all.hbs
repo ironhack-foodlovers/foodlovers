@@ -32,48 +32,9 @@
 
 <hr />
 
-{{!-- Section with map starts --}}
+{{!-- -------------------------------------------Map Start-------------------------------------------- --}}
 
-<div id="map" style="width: 70vw; height: 70vh;"></div>
+<div id='map' style='width: 75vw; height: 60vh;'></div>	
+<script src="/js/map-all-restaurants.js"></script>
 
-<script
-  src="https://unpkg.com/@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js"
-></script>
-
-<script>
-  mapboxgl.accessToken ='pk.eyJ1IjoibWlzdHJhbGdyYXVlc3RlIiwiYSI6ImNsMmc2c2NuZjAxMjIzZnF3MDYzMTByeGEifQ.zTsKOfC6Yt3Vv-FTXhm6wQ';
-  const mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
-
-  mapboxClient.geocoding
-    .forwardGeocode({ query: 'Christinenstraße 26 Berlin Deutschland', autocomplete: false, limit: 1 })
-    .send()
-    .then((response) => { 
-        if ( 
-            !response || 
-            !response.body || 
-            !response.body.features || 
-            !response.body.features.length
-        ) { 
-            console.error('Invalid response:'); 
-            console.error(response); 
-            return; 
-        }
-
-        const feature = response.body.features[0];
-
-        const map = new mapboxgl.Map({
-            container: 'map', 
-            style: 'mapbox://styles/mapbox/streets-v11', 
-            center:
-            feature.center, 
-            zoom: 10 }); 
-  
-  // Create a marker and add it to the map. new
-
-   new mapboxgl.Marker().setLngLat(feature.center).addTo(map); });
-
-</script>
-
-{{!-- Section with map ends --}}
-
-{{! <script src="/js/map-all-restaurants.js"></script> }}
+{{!-- -------------------------------------------Map End-------------------------------------------- --}}
