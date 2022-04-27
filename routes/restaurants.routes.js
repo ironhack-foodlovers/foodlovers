@@ -3,29 +3,48 @@ const Restaurant = require('../models/Restaurant');
 const User = require('../models/User');
 
  
-
+const newTags = [{  name: 'High Class'}, { name: 'Superior Breakfast'} , {  name: 'Craving Comfort Food'},
+{ name: 'Coffee with Friends'}, { name:  'Date approved'}]
 
 const isLoggedOut = require("../middleware/isLoggedOut");
 const isLoggedIn = require("../middleware/isLoggedIn");
 
 // Display site - "all restaurants"
 router.get('/all', isLoggedIn, (req, res, next) => {
+  
+    
     Restaurant.find()
     .then(restaurantFromDB => {
-        console.log('Restaurants werden angezeigt');
-        console.log(restaurantFromDB)
-        res.render('restaurants/all', {restaurants: restaurantFromDB})
+        res.render('restaurants/all', {restaurants: restaurantFromDB, newTags: newTags})
     })
     .catch(err => {
         next(err)
     })
 })
 
+
+
+router.post('/all/filtered', isLoggedIn, (req, res, next) => {
+    const { filteredTags} = req.body
+
+    
+    Restaurant.find({tags: {$in: [filteredTags]}})
+    .then(restaurantFromDB => {
+        res.render('restaurants/all', {restaurants: restaurantFromDB, newTags: newTags, test:  filteredTags})
+    })
+    .catch(err => {
+        next(err)
+    })
+
+})
+
+
+
+
+
 // Display site - "form to add new restaurant"
 router.get('/all/add', (req, res, next) => {
 
-    const tags = [{  name: 'High Class'}, { name: 'Superior Breakfast'} , {  name: 'Craving Comfort Food'},
-    { name: 'Coffee with Friends'}, { name:  'Date approved'}]
 
     Restaurant.find()
     .then(restaurantFromDB => {
@@ -39,7 +58,7 @@ router.get('/all/add', (req, res, next) => {
 // Add a new restaurant to global db"
 router.post('/all',  isLoggedIn, (req, res, next) => {
     const {name, street, houseNumber, zipCode, city, country, telephone, url, tags, description} = req.body
-    console.log(req.body)
+
     Restaurant.create({
         name: name,
         street: street,
@@ -88,11 +107,8 @@ User.findById(userId)
 });
 
 // Edit a restaurant in global db
-router.get('/all/edit/:id',  isLoggedIn, (req, res, next) => {
-
-    
-    const newTags = [{  name: 'High Class'}, { name: 'Superior Breakfast'} , {  name: 'Craving Comfort Food'},
-    { name: 'Coffee with Friends'}, { name:  'Date approved'}]
+router.get('/all/edit/:id',  isLoggedIn, (req, res, next) => { 
+  
     const id = req.params.id
 	Restaurant.findById(id)
 		.then(restaurantFromDB => {
@@ -103,6 +119,11 @@ router.get('/all/edit/:id',  isLoggedIn, (req, res, next) => {
 			next(err)
 		})
 });
+
+
+
+
+
 
 // Display site - "edit a restaurant"
 router.post('/all/edit/:id',  isLoggedIn, (req, res, next) => {
