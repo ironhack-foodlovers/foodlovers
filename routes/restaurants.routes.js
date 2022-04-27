@@ -31,7 +31,17 @@ router.get('/all', isLoggedIn, (req, res, next) => {
     })
 })
 
-
+// Display site - "restaurant details"
+router.get('/details/:id', (req, res, next) =>{
+    const id = req.params.id
+    Restaurant.findById(id)
+    .then(restaurantFromDB => {
+        res.render('restaurants/details', {restaurant: restaurantFromDB})
+    })
+    .catch(err => {
+        next(err)
+    })
+})
 
 router.post('/all/filtered', isLoggedIn, (req, res, next) => {
     const { filteredTags} = req.body
@@ -47,7 +57,7 @@ router.post('/all/filtered', isLoggedIn, (req, res, next) => {
 })
 
 
-router.get("/my-restaurants",  isLoggedIn, (req, res, next) => {
+router.get("/my-restaurants", isLoggedIn, (req, res, next) => {
 
     const userId = req.user._id
     const { filteredTags} = req.body
@@ -274,6 +284,19 @@ router.get('/my-restaurants/restaurant-data', isLoggedIn, (req, res, next) => {
     .catch(err => {
         next(err)
     })    
+})
+
+// Get the restaurant data from the restaurant, which is displayed in the detail view
+router.get('/details/restaurant-data/:id', (req, res, next) => {
+    const id = req.params.id
+
+    Restaurant.findById(id)
+    .then(restaurants => {
+        res.json(restaurants)
+    })
+    .catch(err => {
+        next(err)
+    })
 })
 
 /* --------------------------------------------- routes for Maps END -----------------------------------*/
