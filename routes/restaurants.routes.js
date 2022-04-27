@@ -13,7 +13,8 @@ router.get('/all', isLoggedIn, (req, res, next) => {
     Restaurant.find()
     .then(restaurantFromDB => {
         console.log('Restaurants werden angezeigt');
-        res.render('restaurants/all', {restaurants: restaurantFromDB, status: false})
+        console.log(restaurantFromDB)
+        res.render('restaurants/all', {restaurants: restaurantFromDB})
     })
     .catch(err => {
         next(err)
@@ -22,12 +23,23 @@ router.get('/all', isLoggedIn, (req, res, next) => {
 
 // Display site - "form to add new restaurant"
 router.get('/all/add', (req, res, next) => {
-    res.render('restaurants/add-restaurant')
+
+    const tags = [{  name: 'High Class'}, { name: 'Superior Breakfast'} , {  name: 'Craving Comfort Food'},
+    { name: 'Coffee with Friends'}, { name:  'Date approved'}]
+
+    Restaurant.find()
+    .then(restaurantFromDB => {
+        res.render('restaurants/add-restaurant', {tags: tags})
+    })
+    .catch(err => {
+        next(err)
+    })
 })
 
 // Add a new restaurant to global db"
 router.post('/all',  isLoggedIn, (req, res, next) => {
     const {name, street, houseNumber, zipCode, city, country, telephone, url, tags, description} = req.body
+    console.log(req.body)
     Restaurant.create({
         name: name,
         street: street,
@@ -77,10 +89,15 @@ User.findById(userId)
 
 // Edit a restaurant in global db
 router.get('/all/edit/:id',  isLoggedIn, (req, res, next) => {
+
+    
+    const newTags = [{  name: 'High Class'}, { name: 'Superior Breakfast'} , {  name: 'Craving Comfort Food'},
+    { name: 'Coffee with Friends'}, { name:  'Date approved'}]
     const id = req.params.id
 	Restaurant.findById(id)
 		.then(restaurantFromDB => {
-			res.render('restaurants/edit-restaurant', { restaurant: restaurantFromDB })
+            console.log(restaurantFromDB, newTags)
+			res.render('restaurants/edit-restaurant', { restaurant: restaurantFromDB, newTags: newTags})
 		})
 		.catch(err => {
 			next(err)
