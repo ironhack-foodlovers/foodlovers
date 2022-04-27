@@ -36,17 +36,25 @@
             <label for="">Website: </label>	
             <input type="url" name="url" value="{{url}}">
         </li>
-        <li>
-            <label for="">Labels: </label>	
-            <input type="text" name="tags" value="{{tags}}">
-        </li>
+
         <li>
             <label for="">Description: </label>	
             <input type="text" name="description"value="{{description}}">
         </li>
     </ul>
+
+    {{/with}}
+
+
+    <label for="">Tags: </label>	
+        <select name="tags"  multiple>
+{{#each newTags}}
+<option>{{name}}</option>
+{{/each}}
+</select>
+
 	<button type="submit">Save</button>
 </form>
 
-{{/with}}
+
 
