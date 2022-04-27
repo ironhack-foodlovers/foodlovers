@@ -14,7 +14,6 @@ axios.get('/all/restaurant-data')
 
         restaurants.data.forEach(restaurant => {
             const coord = restaurant.geoCoordinates
-
             // create the popup
             const popup = new mapboxgl.Popup({ offset: 25 }).setText(
             restaurant.name
@@ -24,7 +23,7 @@ axios.get('/all/restaurant-data')
             const el = document.createElement('div');
             el.id = 'marker';
 
-            //create the marker on map
+            // create the marker on map
             new mapboxgl.Marker({
                 color: '#7F200B',
             })

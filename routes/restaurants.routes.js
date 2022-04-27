@@ -96,18 +96,12 @@ router.post('/my-restaurants/filtered', isLoggedIn, (req, res, next) => {
 
 })
 
-
-
-
-
-
 // Display site - "form to add new restaurant"
 router.get('/all/add', (req, res, next) => {
 
-
     Restaurant.find()
     .then(restaurantFromDB => {
-        res.render('restaurants/add-restaurant', {tags: tags})
+        res.render('restaurants/add-restaurant', {tags: newTags})
     })
     .catch(err => {
         next(err)
