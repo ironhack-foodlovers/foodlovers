@@ -11,6 +11,7 @@ const restaurantSchema = new Schema(
     zipCode: Number,
     city: String,
     country: String,
+    geoCoordinates: Array,
 
     telephone: String,
     url: String,
