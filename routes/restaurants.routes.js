@@ -15,11 +15,16 @@ const isLoggedIn = require("../middleware/isLoggedIn");
 
 // Display site - "all restaurants"
 router.get('/all', isLoggedIn, (req, res, next) => {
+
+    const user = req.user
+    console.log(user)
+
+    const liked = true;
   
-    
     Restaurant.find()
     .then(restaurantFromDB => {
-        res.render('restaurants/all', {restaurants: restaurantFromDB, newTags: newTags})
+        console.log(liked)
+        res.render('restaurants/all', {restaurants: restaurantFromDB, newTags: newTags, liked: liked, user: user})
     })
     .catch(err => {
         next(err)
@@ -101,7 +106,7 @@ router.get('/all/add', (req, res, next) => {
 // Add a new restaurant to global db"
 router.post('/all',  isLoggedIn, (req, res, next) => {
     const {name, street, houseNumber, zipCode, city, country, telephone, url, tags, description} = req.body
-
+    const liked = false;
     // take the individual address information and turn into URL-encoded UTF-8 string
     let restaurantaddress = encodeURI(`${street} ${houseNumber} ${zipCode} ${city} ${country}`)
 
@@ -122,6 +127,7 @@ router.post('/all',  isLoggedIn, (req, res, next) => {
             telephone: telephone,
             url: url,
             tags: tags,
+            liked: liked,
             description: description
           })
         .then(restaurantFromDB => {
@@ -201,30 +207,30 @@ router.get('/all/add-favorite/:id',  isLoggedIn, (req, res, next) => {
 
     console.log(user.restaurants)
 
-    if(!user.restaurants.includes(restaurantId)) {
-        Restaurant.findById(restaurantId)
-        .then(restaurantFromDB => {
-                User.findByIdAndUpdate(user._id, {
-                    $push: {restaurants: restaurantFromDB} 
-                })
-                .then((updatedUser)=>{  
-                    res.redirect('/my-restaurants')
-                })
-                .catch(err => {
-                    next(err)
-                })
-    })
-    } else {
-
-        Restaurant.find()
-        .then(restaurantFromDB => {
-            console.log("Dieses restuarnat ist schon in der db")
-            res.render('restaurants/all', {restaurants: restaurantFromDB,  message: 'This restaurant is already on your list' })
+// check if clicked on restaurant in order to add to favorites is already in my-restaurants 
+if(!user.restaurants.includes(restaurantId)) {
+    Restaurant.findByIdAndUpdate(restaurantId,  {liked: true })
+    .then(restaurantFromDB => {
+      User.findByIdAndUpdate(user._id, {
+            $push: {restaurants: restaurantFromDB},    
+        },)
+        .then((updatedUser)=>{
+            res.redirect('/my-restaurants')
         })
         .catch(err => {
             next(err)
         })
-    }
+    })
+} else {
+    Restaurant.find()
+    .then(restaurantFromDB => {
+        console.log("Dieses restuarnat ist schon in der db")
+        res.render('restaurants/all', {restaurants: restaurantFromDB,  message: 'This restaurant is already on your list', newTags: newTags })
+    })
+    .catch(err => {
+        next(err)
+    })
+}
 })
 
 
@@ -282,6 +288,7 @@ router.get('/all/remove/:id',  isLoggedIn, (req, res, next) =>{
     User.findById(userId)
     .then(userFromDB => {
 
+
        const filteredRestaurants =  userFromDB.restaurants.filter((restaurant) => {
 
             if(restaurant.toString() === restaurantId) {
@@ -292,14 +299,17 @@ router.get('/all/remove/:id',  isLoggedIn, (req, res, next) =>{
     
         })
 
-        console.log(filteredRestaurants)
 
         userFromDB.restaurants = filteredRestaurants
 
         userFromDB.save()
 
         .then(savedObject => {
-            console.log(savedObject)
+            Restaurant.findByIdAndUpdate(restaurantId,  {liked: false })
+            .then(updatedLiked => {
+                console.log(updatedLiked)
+            })
+
             res.redirect('/my-restaurants')
         })
     })

@@ -1,3 +1,9 @@
+
+
+{{#with user}}
+<h1>Hello {{username}}</h1>
+{{/with}}
+
 <h1>Liste aller Restaurants</h1>
 
 <button onclick="window.location.href = '/all/add';">Add new Restaurant</button>
@@ -21,7 +27,19 @@
 <button type="submit">Filter</button>
 </form>
 
+
+
 {{#each restaurants}}
+
+
+{{#if liked}}
+ <img class="addBtn" src="/images/full-star.png " alt="add" onclick="window.location.href = '/all/add-favorite/{{_id}}';"></img>
+{{else}}
+ <img class="addBtn" src="/images/empty-star.png " alt="add" onclick="window.location.href = '/all/add-favorite/{{_id}}';"></img>
+ {{/if}}
+
+
+
 <h1>{{name}}</h1>
 
 <h4>Adresse:</h4>
@@ -41,12 +59,18 @@
 <h4>Beschreibung:</h4>
 <p>{{description}}</p>
 
-<button onclick="window.location.href = '/all/edit/{{_id}}';">Edit</button>
-<button
-onclick="window.location.href = '/all/delete/{{_id}}';"
->Delete</button>
-<button onclick="window.location.href = '/all/add-favorite/{{_id}}';">Add to
-Favorites</button>
+
+    <h4>Beschreibung:</h4>
+    <p>{{description}}</p>
+
+      <h4>Liked:</h4>
+    <p>{{liked}}</p>
+
+
+  <button onclick="window.location.href = '/all/edit/{{_id}}';">Edit</button>
+  <button onclick="window.location.href = '/all/delete/{{_id}}';">Delete</button>
+  <hr />
+
 
 <hr/>
 {{/each}}

@@ -18,6 +18,8 @@ const restaurantSchema = new Schema(
 
     tags: [],
     description: String,
+    liked: Boolean,
+
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
