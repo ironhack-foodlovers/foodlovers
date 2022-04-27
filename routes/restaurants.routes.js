@@ -51,7 +51,7 @@ router.post('/all',  isLoggedIn, (req, res, next) => {
 
 router.get("/my-restaurants",  isLoggedIn, (req, res, next) => {
 
-    const userId = req.user._id
+    const userId = req.user
 
 console.log(userId)
 
