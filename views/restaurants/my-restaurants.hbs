@@ -2,16 +2,15 @@
 
 <h3>Filter: </h3>
 
-
 <p>{{test}}</p>
 
 <form action="/my-restaurants/filtered" method="POST">
-<select name="filteredTags">
-{{#each newTags}}
-<option>{{name}}</option>
-{{/each}}
-</select>
-<button type="submit">Filter</button>
+    <select name="filteredTags">
+    {{#each newTags}}
+    <option>{{name}}</option>
+    {{/each}}
+    </select>
+    <button type="submit">Filter</button>
 </form>
 
 
@@ -36,9 +35,10 @@
     <p>{{url}}</p>
 
      <h4>Tags:</h4>
-{{#each tags}}
-<p>{{this}}</p>
-{{/each}}
+
+    {{#each tags}}
+        <p>{{this}}</p>
+    {{/each}}
 
     <h4>Beschreibung:</h4>
     <p>{{description}}</p>
@@ -48,8 +48,14 @@
 
     <button onclick="window.location.href = '/all/edit/{{_id}}';">Edit</button>
     <button onclick="window.location.href = '/all/remove/{{_id}}';">Remove from favorites</button>
-<hr>
 
-
+    <hr>
 
 {{/each}}
+
+{{!-- -------------------------------------------Map Start-------------------------------------------- --}}
+
+<div id='map' style='width: 75vw; height: 60vh;'></div>	
+<script src="/js/map-my-favorite-restaurants.js"></script>
+
+{{!-- --------------------------------------------Map End---------------------------------------------- --}}

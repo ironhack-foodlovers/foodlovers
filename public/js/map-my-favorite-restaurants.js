@@ -9,9 +9,9 @@ const map = new mapboxgl.Map({
 });
 
 // gets all the restaurants data 
-axios.get('/all/restaurant-data')
+axios.get('/my-restaurants/restaurant-data')
     .then(restaurants => {
-
+        console.log(restaurants);
         restaurants.data.forEach(restaurant => {
             const coord = restaurant.geoCoordinates
             // create the popup

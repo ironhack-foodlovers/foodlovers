@@ -16,7 +16,6 @@
 
 <h3>Filter: </h3>
 
-
 <p>{{test}}</p>
 
 <form action="/all/filtered" method="POST">
@@ -32,6 +31,7 @@
 
 {{#each restaurants}}
 
+
 {{#if liked}}
  <img class="addBtn" src="/images/full-star.png " alt="add" onclick="window.location.href = '/all/add-favorite/{{_id}}';"></img>
 {{else}}
@@ -39,21 +39,25 @@
  {{/if}}
 
 
+
 <h1>{{name}}</h1>
 
-  <h4>Adresse:</h4>
-  <p>{{street}} {{houseNumber}}</p>
-  <p>{{zipCode}}, {{city}}</p>
-  <p>{{country}}</p>
+<h4>Adresse:</h4>
+<p>{{street}} {{houseNumber}}</p>
+<p>{{zipCode}}, {{city}}</p>
+<p>{{country}}</p>
 
-  <h4>Kontakt:</h4>
-  <p>{{telephone}}</p>
-  <p>{{url}}</p>
+<h4>Kontakt:</h4>
+<p>{{telephone}}</p>
+<p>{{url}}</p>
 
  <h4>Tags:</h4>
 {{#each tags}}
 <p>{{this}}</p>
 {{/each}}
+
+<h4>Beschreibung:</h4>
+<p>{{description}}</p>
 
 
     <h4>Beschreibung:</h4>
@@ -64,16 +68,13 @@
 
 
   <button onclick="window.location.href = '/all/edit/{{_id}}';">Edit</button>
-  <button
-    onclick="window.location.href = '/all/delete/{{_id}}';"
-  >Delete</button>
- 
+  <button onclick="window.location.href = '/all/delete/{{_id}}';">Delete</button>
   <hr />
 
+
+<hr/>
 {{/each}}
 
-
-<hr />
 
 {{!-- -------------------------------------------Map Start-------------------------------------------- --}}
 
