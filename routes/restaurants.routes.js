@@ -70,14 +70,17 @@ router.post('/my-restaurants/filtered', isLoggedIn, (req, res, next) => {
     User.findById(userId)
     .populate('restaurants')
     .then(userFromDB => {
+        console.log(filteredTags)
 
         for(let i = 0; i<userFromDB.restaurants.length; i++) {
 
-            if(userFromDB.restaurants[i].tags == filteredTags){
+            console.log("out of if: ", userFromDB.restaurants[i].tags)
+
+            if(userFromDB.restaurants[i].tags.includes(filteredTags)){
                 restaurantsFiltered.push(userFromDB.restaurants[i])
-
-
+        
             }
+            
         }
         
         res.render('restaurants/my-restaurants', {restaurants: restaurantsFiltered, newTags: newTags, test:  filteredTags})
