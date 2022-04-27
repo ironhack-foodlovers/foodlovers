@@ -255,6 +255,7 @@ router.get('/all/restaurant-data', (req, res, next) => {
     Restaurant.find()
     .then(restaurants => {
         res.json(restaurants)
+        console.log(res.json(restaurants));
     })
     .catch(err => {
         next(err)
