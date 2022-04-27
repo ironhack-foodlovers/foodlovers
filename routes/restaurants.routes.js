@@ -2,6 +2,8 @@ const router = require("express").Router();
 const Restaurant = require('../models/Restaurant');
 const User = require('../models/User');
 
+ 
+
 
 const isLoggedOut = require("../middleware/isLoggedOut");
 const isLoggedIn = require("../middleware/isLoggedIn");
@@ -24,7 +26,7 @@ router.get('/all/add', (req, res, next) => {
 })
 
 // Add a new restaurant to global db"
-router.post('/all', (req, res, next) => {
+router.post('/all',  isLoggedIn, (req, res, next) => {
     const {name, street, houseNumber, zipCode, city, country, telephone, url, tags, description} = req.body
     Restaurant.create({
         name: name,
@@ -47,7 +49,7 @@ router.post('/all', (req, res, next) => {
     })
 })
 
-router.get("/my-restaurants", (req, res, next) => {
+router.get("/my-restaurants",  isLoggedIn, (req, res, next) => {
 
     const userId = req.user._id
 
@@ -74,7 +76,7 @@ User.findById(userId)
 });
 
 // Edit a restaurant in global db
-router.get('/all/edit/:id', (req, res, next) => {
+router.get('/all/edit/:id',  isLoggedIn, (req, res, next) => {
     const id = req.params.id
 	Restaurant.findById(id)
 		.then(restaurantFromDB => {
@@ -86,7 +88,7 @@ router.get('/all/edit/:id', (req, res, next) => {
 });
 
 // Display site - "edit a restaurant"
-router.post('/all/edit/:id', (req, res, next) => {
+router.post('/all/edit/:id',  isLoggedIn, (req, res, next) => {
     const {name, street, houseNumber, zipCode, city, country, telephone, url, tags, description} = req.body
     const id = req.params.id
     Restaurant.findByIdAndUpdate(id, {
@@ -110,7 +112,7 @@ router.post('/all/edit/:id', (req, res, next) => {
 })
 
 // Add a restaurant to the users favorite lis ('my-restaurants')
-router.get('/all/add-favorite/:id', (req, res, next) => {
+router.get('/all/add-favorite/:id',  isLoggedIn, (req, res, next) => {
    
     const user = req.user
     const restaurantId = req.params.id
@@ -143,13 +145,20 @@ if(!user.restaurants.includes(restaurantId)) {
 
 } else {
 
-    res.redirect('/all')
-   console.log("Dieses restuarnat ist schon in der db")
-  
+    Restaurant.find()
+    .then(restaurantFromDB => {
+        console.log("Dieses restuarnat ist schon in der db")
+        res.render('restaurants/all', {restaurants: restaurantFromDB,  message: 'This restaurant is already on your list' })
+    })
+    .catch(err => {
+        next(err)
+    })
+    
+ 
 }
 })
 
-router.get('/all/delete/:id', (req, res, next) =>{
+router.get('/all/delete/:id',  isLoggedIn, (req, res, next) =>{
     const id = req.params.id
     Restaurant.findByIdAndDelete(id)
     .then (() => {
@@ -160,7 +169,7 @@ router.get('/all/delete/:id', (req, res, next) =>{
     })
 })
 
-router.get('/all/remove/:id', (req, res, next) =>{
+router.get('/all/remove/:id',  isLoggedIn, (req, res, next) =>{
     const userId = req.user._id
 
     const restaurantId = req.params.id
