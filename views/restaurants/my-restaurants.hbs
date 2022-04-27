@@ -1,1 +1,44 @@
 <h1>Welcome to my restaurants 🍔</h1>
+
+<h3>Filter: </h3>
+
+
+<p>{{test}}</p>
+
+<form action="/my-restaurants/filtered" method="POST">
+<select name="filteredTags">
+{{#each newTags}}
+<option>{{name}}</option>
+{{/each}}
+</select>
+<button type="submit">Filter</button>
+</form>
+
+{{#each restaurants}}
+
+	<h1>{{name}}</h1>
+
+	<h4>Adresse:</h4>
+    <p>{{street}} {{houseNumber}}</p>
+    <p>{{zipCode}}, {{city}}</p>
+    <p>{{country}}</p>
+
+    <h4>Kontakt:</h4>
+    <p>{{telephone}}</p>
+    <p>{{url}}</p>
+
+     <h4>Tags:</h4>
+{{#each tags}}
+<p>{{this}}</p>
+{{/each}}
+
+    <h4>Beschreibung:</h4>
+    <p>{{description}}</p>
+
+    <button onclick="window.location.href = '/all/edit/{{_id}}';">Edit</button>
+    <button onclick="window.location.href = '/all/remove/{{_id}}';">Remove from favorites</button>
+<hr>
+
+
+
+{{/each}}

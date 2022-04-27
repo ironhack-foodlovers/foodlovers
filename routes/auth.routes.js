@@ -45,35 +45,35 @@ router.post("/signup", isLoggedOut, (req, res, next) => {
 			} else {
 				// we can use that username
 				// and hash the password
+        
 				const salt = bcrypt.genSaltSync()
 				const hash = bcrypt.hashSync(password, salt)
 				const restaurants = []
+        
 				// create the user
-				User.create({ username, password: hash, restaurants})
-					.then(createdUser => {
-						
-            req.session.passport = createdUser._id;
-            // console.log( req.session.user)
-                    
-						// if we want to log the user in using passport
-						// req.login()
-						res.redirect('/my-restaurants')
-					})
-					.catch(err => next(err))
+        User.create({ username, password: hash })
+        .then(createdUser => {
+
+          req.login(createdUser, function(err) {
+            if (err) { return next(err); }
+            return res.redirect('/my-restaurants');
+          });       
+          
+        })
+        .catch(err => next(err))
 			}
 		})
 });
 
 router.get('/logout', isLoggedIn, (req, res, next) => {
-    console.log(req.session.user)
 
     req.session.destroy((err) => {
         if (err) {
           return res
             .status(500)
-            .render("auth/logout", { errorMessage: err.message });
+            .render("/", { errorMessage: err.message });
         }
-        res.redirect("/login");
+        res.redirect("/");
       });
 
 });

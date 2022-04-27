@@ -16,7 +16,7 @@ const restaurantSchema = new Schema(
     telephone: String,
     url: String,
 
-    tags: Array,
+    tags: [],
     description: String,
   },
   {

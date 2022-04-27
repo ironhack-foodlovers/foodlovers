@@ -4,9 +4,28 @@
 
 <hr />
 
+{{#if message}}
+		<p>{{message}}</p>
+	{{/if}}
+
+<h3>Filter: </h3>
+
+
+<p>{{test}}</p>
+
+<form action="/all/filtered" method="POST">
+<select name="filteredTags">
+{{#each newTags}}
+<option>{{name}}</option>
+{{/each}}
+</select>
+<button type="submit">Filter</button>
+</form>
+
 {{#each restaurants}}
 
-  <h1>{{name}}</h1>
+
+<h1>{{name}}</h1>
 
   <h4>Adresse:</h4>
   <p>{{street}} {{houseNumber}}</p>
@@ -17,8 +36,15 @@
   <p>{{telephone}}</p>
   <p>{{url}}</p>
 
-  <h4>Beschreibung:</h4>
-  <p>{{description}}</p>
+ <h4>Tags:</h4>
+{{#each tags}}
+<p>{{this}}</p>
+{{/each}}
+
+
+    <h4>Beschreibung:</h4>
+    <p>{{description}}</p>
+
 
   <button onclick="window.location.href = '/all/edit/{{_id}}';">Edit</button>
   <button
@@ -30,6 +56,7 @@
 
 {{/each}}
 
+
 <hr />
 
 {{!-- -------------------------------------------Map Start-------------------------------------------- --}}
@@ -38,3 +65,4 @@
 <script src="/js/map-all-restaurants.js"></script>
 
 {{!-- -------------------------------------------Map End-------------------------------------------- --}}
+
