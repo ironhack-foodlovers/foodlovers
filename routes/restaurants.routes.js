@@ -7,6 +7,7 @@ const mapBoxAccessToken = 'pk.eyJ1IjoibWlzdHJhbGdyYXVlc3RlIiwiYSI6ImNsMmc2eGNscz
 
 
 
+
  
 const newTags = [{  name: 'High Class'}, { name: 'Superior Breakfast'} , {  name: 'Craving Comfort Food'},
 { name: 'Coffee with Friends'}, { name:  'Date approved'}]
@@ -17,12 +18,15 @@ const isLoggedIn = require("../middleware/isLoggedIn");
 // Display site - "all restaurants"
 router.get('/all', isLoggedIn, (req, res, next) => {
 
+    const user = req.user
+    console.log(user)
+
     const liked = true;
   
     Restaurant.find()
     .then(restaurantFromDB => {
         console.log(liked)
-        res.render('restaurants/all', {restaurants: restaurantFromDB, newTags: newTags, liked: liked})
+        res.render('restaurants/all', {restaurants: restaurantFromDB, newTags: newTags, liked: liked, user: user})
     })
     .catch(err => {
         next(err)

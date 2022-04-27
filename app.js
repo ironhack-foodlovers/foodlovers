@@ -82,7 +82,10 @@ app.use(passport.session())
 const capitalized = require("./utils/capitalized");
 const projectName = "restaurant-review";
 
+
 app.locals.appTitle = `${capitalized(projectName)} created with IronLauncher`;
+
+
 
 
 
