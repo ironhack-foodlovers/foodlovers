@@ -39,6 +39,57 @@ router.post('/all/filtered', isLoggedIn, (req, res, next) => {
 })
 
 
+router.get("/my-restaurants",  isLoggedIn, (req, res, next) => {
+
+    const userId = req.user._id
+    const { filteredTags} = req.body
+
+console.log(userId)
+
+User.findById(userId)
+.populate('restaurants')
+.then(userFromDB => {
+    console.log('Restaurants werden angezeigt');
+    res.render('restaurants/my-restaurants', {restaurants: userFromDB.restaurants, newTags: newTags, test:  filteredTags})
+})
+.catch(err => {
+    next(err)
+})
+
+});
+
+
+
+
+router.post('/my-restaurants/filtered', isLoggedIn, (req, res, next) => {
+    const { filteredTags} = req.body
+    let restaurantsFiltered = []
+    const userId = req.user._id
+
+
+    User.findById(userId)
+    .populate('restaurants')
+    .then(userFromDB => {
+
+        for(let i = 0; i<userFromDB.restaurants.length; i++) {
+
+            if(userFromDB.restaurants[i].tags == filteredTags){
+                restaurantsFiltered.push(userFromDB.restaurants[i])
+
+
+            }
+        }
+        
+        res.render('restaurants/my-restaurants', {restaurants: restaurantsFiltered, newTags: newTags, test:  filteredTags})
+    })
+    .catch(err => {
+        next(err)
+    })
+
+})
+
+
+
 
 
 
@@ -80,31 +131,6 @@ router.post('/all',  isLoggedIn, (req, res, next) => {
     })
 })
 
-router.get("/my-restaurants",  isLoggedIn, (req, res, next) => {
-
-    const userId = req.user._id
-
-console.log(userId)
-
-User.findById(userId)
-.populate('restaurants')
-.then(userFromDB => {
-    console.log('Restaurants werden angezeigt');
-    res.render('restaurants/my-restaurants', {restaurants: userFromDB.restaurants})
-})
-.catch(err => {
-    next(err)
-})
-
-/*  Restaurant.find()
- .then(restaurantFromDB => {
-     console.log('Restaurants werden angezeigt');
-     res.render('restaurants/my-restaurants', {restaurants: restaurantFromDB, status: false})
- })
- .catch(err => {
-     next(err)
- }) */
-});
 
 // Edit a restaurant in global db
 router.get('/all/edit/:id',  isLoggedIn, (req, res, next) => { 
