@@ -113,7 +113,8 @@ color: white;
 padding: 10px;
 border: none;
 border-radius: 5px;
-margin: 5px 0px 0px 25px;
+margin-top: 15px;
+width: 200px;
 }
 /* Add Button END */
 
@@ -138,7 +139,17 @@ border-radius: 5px;
 }
 /* platzhalter END */
 
+
+
+
+
 /* Select Tag Styyling START */
+.section-one{
+  display: flex;
+  justify-content: space-evenly;
+  align-items: start;
+}
+
 
 *:focus {
   outline: none;
@@ -150,7 +161,7 @@ select {
   background-color: transparent;
   border: 0;
   padding:10px;
-  margin:-5px -20px -5px -5px;
+  margin:-5px -20px 0px 0px;
 }
 
 .tag-filter{
@@ -168,9 +179,7 @@ select {
   
  
 }
-
-
-/* Select Tag Styyling END */
+/* Select Tag Styling END */
 
 
 
@@ -214,28 +223,35 @@ select {
 
 .restaurant{
   display: flex;
-  justify-content: flex-start;
-  align-items: start;
+  justify-content: center;
+  align-items: center;
   background-color: #0A385C;
   width: 680px;
   color: white;
   margin: 0px 0px 10px 0px;
+  padding: 10px 0px 10px 20px;
 }
 
 
 .image-container{
-  padding: 50px;
-  width: 50px;
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  width: 300px;
+  height: auto;
+  
 }
 
 .info-container{
-  padding: 50px;
+  padding: 30px;
 }
 
 
+
+
 .restaurant-img {
-  width: 50px;
-  height: auto;
+  width: 250px;
+  text-align: center;
 }
 
 
@@ -267,6 +283,7 @@ select {
 
 .addBtn{
   width: 30px;
+  padding-right: 10px;
 }
 
 
@@ -296,3 +313,37 @@ border-radius: 5px;
 }
 /* Map styling END */
 
+
+
+
+/* Form Styling START */
+
+.container-add{
+  display: flex;
+  justify-content: stretch;
+  align-items: flex-start;
+  padding: 30px 0px 0px 0px;
+ 
+}
+
+.add-form{
+  list-style-type: none; /* Remove bullets */
+  padding: 0; /* Remove padding */
+  margin: 0;
+}
+
+label{
+  font-size: 16px;
+  font-weight: 100;
+  color: #0A385C;
+}
+
+input{
+  margin: 5px 10px 5px 10px;
+  width: 50%;
+}
+
+
+
+
+/* Form Styling END */

@@ -265,7 +265,7 @@ if(!user.restaurants.includes(restaurantId)) {
             $push: {restaurants: restaurantFromDB},    
         },)
         .then((updatedUser)=>{
-            res.redirect('/my-restaurants')
+            res.redirect('/all')
         })
         .catch(err => {
             next(err)

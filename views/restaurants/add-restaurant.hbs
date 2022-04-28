@@ -20,59 +20,70 @@
 
 </ul>
 
-<h1>Add a new Restaurant</h1>
+
+<div class="container-add"></div>
+
 <form action="/all" method="POST" enctype="multipart/form-data">
-	<ul>
-        <li>
-            <label for="">Restaurant name: </label>	
+<table class="add-form">
+        <tr>
+        <td>
+            <label  for="">Restaurant name: </label>	
+        </td>  
+        <td>
             <input type="text" name="name">
-        </li>
-        <li>
-            <label for="">Street: </label>	
-            <input type="text" name="street">
-        </li>
-        <li>
-            <label for="">Num: </label>	
-            <input type="number" name="houseNumber">
-        </li>
-        <li>
-            <label for="">ZIP: </label>
-            <input type="text" name="zipCode">
-        </li>
-        <li>
-            <label for="">City: </label>	
-            <input type="text" name="city">
-        </li>
-        <li>
-            <label for="">Country: </label>	
-            <input type="text" name="country">
-        </li>
-        <li>
-            <label for="">Phone: </label>	
-            <input type="text" name="telephone">
-        </li>
-        <li>
-            <label for="">Website: </label>	
-            <input type="url" name="url">
-        </li>
-        <li>
-            <label for="">Image: </label>	
-            <input type="file" name="imageUrl">
-        </li>
-        <li>
-            <label for="">Tags: </label>	
-        <select name="tags"  multiple>
+        </td> 
+        </tr>
+         <tr>
+           <td> <label  for="">Street: </label></td>	
+            <td><input type="text" name="street"></td>
+        </td>
+        </tr>
+        <tr>
+           <td><label  for="">Num: </label></td>	
+            <td><input type="number" name="houseNumber"></td>
+        </tr>
+       <tr>
+          <td><label for="">ZIP: </label></td>
+        <td><input type="text" name="zipCode"></td>
+       </tr>
+        <tr>
+          <td><label for="">City: </label>	</td>
+          <td><input type="text" name="city"></td>
+       </tr>
+        <tr>
+           <td><label  for="">Country: </label>	</td>
+           <td><input type="text" name="country"></td>
+      </tr>
+       <tr>
+           <td><label  for="">Phone: </label>	</td>
+            <td><input type="text" name="telephone"></td>
+       </tr>
+        <tr>
+           <td><label class="label-add" for="">Website: </label>	</td>
+           <td><input type="url" name="url"></td>
+       </tr>
+        <tr>
+            <td><label  for="">Image: </label></td>	
+            <td><input type="file" name="imageUrl"></td>
+       </tr>
+       <tr>
+            <td><label  for="">Tags: </label>	</td>
+      <td><select name="tags"  multiple>
 {{#each tags}}
 <option   >{{name}}</option>
 {{/each}}
-</select>
-        </li>
-        <li>
-            <label for="">Description: </label>	
-            <input type="text" name="description">
-        </li>
-    </ul>
+</select></td>
+     </tr>
+       <tr>
+         <td><label class="label-add" for="">Description: </label></td>	
+           <td><input type="text" name="description"></td>
+       </tr>
 
-
-	<button type="submit">Add</button>
+<tr>
+<td>
+	<button class="createBtn" type="submit">Add</button>
+</td>
+    </tr>
 </form>
+</table>
+</div>

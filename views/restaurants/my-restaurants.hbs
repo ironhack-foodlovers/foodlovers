@@ -59,7 +59,7 @@
   <h1 class="headline-restaurant">{{name}}</h1>
    {{!-- If star is filled or empty --}}
   {{#if liked}}
-  <img class="addBtn" src="/images/full-star.png " alt="add" onclick="window.location.href = '/all/add-favorite/{{_id}}';"></img>
+  <img class="addBtn" src="/images/full-star.png " alt="add" onclick="window.location.href = '/all/remove/{{_id}}';"></img>
   {{else}}
   <img class="addBtn" src="/images/empty-star.png " alt="add" onclick="window.location.href = '/all/add-favorite/{{_id}}';"></img>
   {{/if}}
