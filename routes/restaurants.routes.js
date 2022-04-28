@@ -114,7 +114,7 @@ router.post('/my-restaurants/filtered', isLoggedIn, (req, res, next) => {
 })
 
 // Display site - "restaurant details"
-router.get('/details/:id', (req, res, next) =>{
+router.get('/details/:id', isLoggedIn, (req, res, next) =>{
     const id = req.params.id
     Restaurant.findById(id)
     .then(restaurantFromDB => {
@@ -370,7 +370,7 @@ router.post('/restaurant-data', (req, res, next) => {
 // })
 
 // Get the restaurant data from the restaurant, which is displayed in the detail view
-router.get('/details/restaurant-data/:id', (req, res, next) => {
+router.get('/details/restaurant-data/:id', isLoggedIn, (req, res, next) => {
     const id = req.params.id
 
     Restaurant.findById(id)

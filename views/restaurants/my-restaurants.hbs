@@ -6,6 +6,7 @@
 <div class="platzhalter"></div>
 
 
+
 <form action="/my-restaurants/filtered" method="POST">
 <div class="tag-filter">
   <select name="filteredTags" multiple>
@@ -20,12 +21,6 @@
    </div>
 </form>
 
-
-<div class="aktueller-filter-container">
-{{#if test}}
-		<p class="message"> Aktueller Filter: {{this.test}}</p>
-	{{/if}}
-</div>
 <div class="container">
 
 <div class="restaurant-container">
@@ -81,7 +76,7 @@
 
 </div>
 {{!-- -------------------------------------------Map Start-------------------------------------------- --}}
-<div class="map-container">
+<div class="map-container" style="position:fixed; right: 0;">
 <div id='map'></div>	
 <script src="/js/map-all-restaurants.js"></script>
 </div>
