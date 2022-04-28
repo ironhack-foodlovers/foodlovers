@@ -11,6 +11,9 @@ const newTags = [{  name: 'High Class'}, { name: 'Superior Breakfast'} , {  name
 const isLoggedOut = require("../middleware/isLoggedOut");
 const isLoggedIn = require("../middleware/isLoggedIn");
 
+//for cloudinary
+const fileUploader = require('../config/cloudinary.config')
+
 /* ----------------------------------------------------------------------------------------------------------------*/
 
 // Display site - "all restaurants"
@@ -113,8 +116,19 @@ router.get('/all/add', (req, res, next) => {
     })
 })
 
+// router.post('/movies/create', fileUploader.single('movie-cover-image'), (req, res) => {
+//     const { title, description } = req.body;
+   
+//     Movie.create({ title, description, imageUrl: req.file.path })
+//       .then(newlyCreatedMovieFromDB => {
+//         console.log(newlyCreatedMovieFromDB);
+//       })
+//       .catch(error => console.log(`Error while creating a new movie: ${error}`));
+//   });
+
+
 // Add a new restaurant to global db"
-router.post('/all',  isLoggedIn, (req, res, next) => {
+router.post('/all',  isLoggedIn, fileUploader.single('imageUrl'), (req, res, next) => {
     const {name, street, houseNumber, zipCode, city, country, telephone, url, tags, description} = req.body
     const liked = false;
     // take the individual address information and turn into URL-encoded UTF-8 string
@@ -136,6 +150,7 @@ router.post('/all',  isLoggedIn, (req, res, next) => {
             geoCoordinates: longLatRestaurant,
             telephone: telephone,
             url: url,
+            imageUrl: req.file.path,
             tags: tags,
             liked: liked,
             description: description
