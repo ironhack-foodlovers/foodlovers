@@ -1,10 +1,19 @@
+
+
+
+
+
+<div class="containerForDetails">
+<div class="details">
 {{#with restaurant}}
 
-{{!-- Display Image --}}
-<img src="{{imageUrl}}" class="restaurant-img" alt="{{name}}">
+ {{!-- Display Image --}}
+
 
 <h1>{{name}}</h1>
-
+ <div class="image-container-details">
+  <img src="{{imageUrl}}" class="restaurant-img-details" alt="{{name}}">
+</div>
 <h4>Adresse:</h4>
 <p>{{street}} {{houseNumber}}</p>
 <p>{{zipCode}}, {{city}}</p>
@@ -22,20 +31,34 @@
 <h4>Beschreibung:</h4>
 <p>{{description}}</p>
 
-<h4>Liked:</h4>
-<p>{{liked}}</p>
-
-<button onclick="window.location.href = '/all/edit/{{_id}}';">Edit</button>
-<button onclick="window.location.href = '/all/delete/{{_id}}';">Delete</button>
 
 {{!-- This hidden ID is needed for the map --}}
 <p id="restaurant-object-id" hidden>{{_id}}</p>
 
 {{/with}}
 
+
+ {{!-- Buttons --}}
+ <div class="button-container-restaurant">
+<button class="restaurantBtn" onclick="window.location.href = '/all/edit/{{_id}}';">Edit</button>
+<button class="restaurantBtn" onclick="window.location.href = '/all/delete/{{_id}}';">Delete</button>
+</div>
+
+
+
+</div>
+
 {{!-- -------------------------------------------Map Start-------------------------------------------- --}}
-
-<div id='map' style='width: 75vw; height: 60vh;'></div>	
+<div class="map-container" style="display: flex; justify-content: center; align-items:center;">
+<div id='map' style="width: 100%; margin-top: 10px;"></div>	
 <script src="/js/map-detail-restaurant.js"></script>
-
+</div>
 {{!-- -------------------------------------------Map End-------------------------------------------- --}}
+
+
+ 
+
+
+</div>
+
+

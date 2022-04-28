@@ -148,7 +148,7 @@ form{
 }
 
 .message{
-  font-size: 24px;
+  font-size: 16px;
   margin-top: -30px;
 }
 /* Form END */
@@ -348,8 +348,6 @@ border-radius: 5px;
   display: flex;
   justify-content: start;
   align-items: flex-start;
-  position:fixed;
-  right: 0;
 }
 
 #map{
@@ -446,3 +444,25 @@ margin: 5px 10px 5px 10px;
 }
 
 /* login and signup styling END */
+
+
+/* DEtails START */
+
+.mapDetails{
+width: 100vw;
+height: 100vh;
+}
+
+.containerForDetails{
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  text-align: center;
+}
+
+.restaurant-img-details{
+  width: 200px;
+  height: auto;
+}
+
+/* DEtails END */
