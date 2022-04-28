@@ -18,6 +18,53 @@ button:hover{
   cursor: pointer;
 }
 
+/* Index page START */
+.container-index{
+background-image: url("/images/restaurant.jpg");
+background-size: cover;
+background-position: center;
+  width: auto;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+margin-top: 20px;
+}
+
+.container-index a{
+  font-size: 22px;
+  font-weight: 400;
+  color: #013d62;
+  text-decoration: none;
+}
+
+.headline-index{
+  font-size: 40px;
+  font-weight: 400;
+  font-style: italic;
+  color: #0A385C;
+}
+/* Index page END */
+
+/* Login page START */
+
+.container-login{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  
+}
+
+.container-login table {
+  width: 500px;
+}
+
+
+
+
+/* Login page END */
 
 
 /* Logo START*/
@@ -199,11 +246,7 @@ select {
   align-items: flex-start;
 }
 
-.map-container{
-  display: flex;
-  justify-content: start;
-  align-items: flex-start
-}
+
 
 .info-container{
   width:400px;
@@ -300,6 +343,21 @@ border-radius: 5px;
 
 
 /* Map styling START */
+
+.map-container{
+  display: flex;
+  justify-content: start;
+  align-items: flex-start;
+  position:fixed;
+  right: 0;
+}
+
+#map{
+  width: 42vw; 
+  height: 55vh;
+}
+
+
 #marker {
   background-image: url('https://docs.mapbox.com/mapbox-gl-js/assets/washington-monument.jpg');
   background-size: cover;
@@ -311,19 +369,26 @@ border-radius: 5px;
 .mapboxgl-popup {
   max-width: 200px;
 }
+
+
 /* Map styling END */
 
 
 
 
-/* Form Styling START */
-
+/* Form Styling START especiall login. signup, edit and add */
 .container-add{
   display: flex;
-  justify-content: stretch;
-  align-items: flex-start;
+  flex-direction: row;
+  justify-content: center;
+  align-items:center;
   padding: 30px 0px 0px 0px;
- 
+}
+
+.editH1{
+  font-size: 18px;
+  font-weight: 100;
+  text-align: center;
 }
 
 .add-form{
@@ -340,10 +405,44 @@ label{
 
 input{
   margin: 5px 10px 5px 10px;
+  width: 100%;
+  border: none;
+  background-color: #AED7F5;
+  padding: 10px;
+}
+
+table{
   width: 50%;
 }
 
 
+table select {
+  height: 100px;
+}
+
+.login-row{
+  margin-top: 10px;
+}
 
 
+.sendToBtn{
+  background-color: #0A385C;
+color: white; 
+padding: 10px;
+border: none;
+border-radius: 5px;
+margin-top: 15px;
+width: 100%;
+margin: 5px 10px 5px 10px;
+}
 /* Form Styling END */
+
+/* login and signup styling START */
+.login-header{
+  font-size: 32px;
+  font-weight: 600;
+  color: #0A385C;
+  margin: 50px;
+}
+
+/* login and signup styling END */

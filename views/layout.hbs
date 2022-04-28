@@ -15,6 +15,27 @@
 
    <body>
 
+      <ul id="ul-layout">
+
+<div class="navbar-left">
+  <li> <img class="logo" id="img-index"src="/images/logo.png " style="margin-right: 20px;" onclick="window.location.href = '/';" alt="logo"></img></li>
+  </div>
+
+<div class="navbar-right">
+
+{{#if user}}
+{{#with user}}
+  <li class="il-layout"><a href="/my-restaurants" >My restaurants</a></li>
+  <li class="il-layout"><a href="/all">All restaurants</a></li>
+   <li class="il-layout"><a href="/logout">logout</a></li>
+ {{/with}}
+ {{else}}
+ <li class="il-layout"><a href="/login">Login</a></li>
+ <li class="il-layout"><a href="/signup" >Signup</a></li>
+{{/if}}
+</div>
+</ul>
+
       {{{body}}}
 
    </body>

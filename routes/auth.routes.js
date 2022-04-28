@@ -56,7 +56,7 @@ router.post("/signup", isLoggedOut, (req, res, next) => {
 
           req.login(createdUser, function(err) {
             if (err) { return next(err); }
-            return res.redirect('/my-restaurants');
+            return res.redirect('/all');
           });       
           
         })
