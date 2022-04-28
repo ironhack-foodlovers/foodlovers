@@ -455,14 +455,30 @@ height: 100vh;
 
 .containerForDetails{
   display: flex;
-  flex-direction: column;
-  justify-content: start;
-  text-align: center;
+  justify-content: space-evenly;
+  align-items: center;
+  background-color: #0A385C;
+  padding: 20px;
+  
+}
+
+.containerForDetails h4, h1{
+
+  color:white;
 }
 
 .restaurant-img-details{
   width: 200px;
   height: auto;
 }
+
+
+.containerForDetails p {
+  padding: 0;
+  margin: 0;
+  color: white;
+}
+ 
+
 
 /* DEtails END */

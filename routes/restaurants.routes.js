@@ -116,9 +116,10 @@ router.post('/my-restaurants/filtered', isLoggedIn, (req, res, next) => {
 // Display site - "restaurant details"
 router.get('/details/:id', isLoggedIn, (req, res, next) =>{
     const id = req.params.id
+    const user = req.user
     Restaurant.findById(id)
     .then(restaurantFromDB => {
-        res.render('restaurants/details', {restaurant: restaurantFromDB})
+        res.render('restaurants/details', {restaurant: restaurantFromDB, user: user})
     })
     .catch(err => {
         next(err)
