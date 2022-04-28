@@ -12,7 +12,7 @@ axios.get(`/details/restaurant-data/${id}`)
 
         const map = new mapboxgl.Map({
             container: 'map', // container ID
-            style: 'mapbox://styles/mapbox/dark-v10', // style URL
+            style: 'mapbox://styles/mapbox/light-v10', // style URL
             center: coord, // starting position [lng, lat]
             zoom: 15, // starting zoom
             // pitch: 100

@@ -13,9 +13,8 @@ const isLoggedIn = require("../middleware/isLoggedIn");
 
 //for cloudinary
 const {fileUploader, cloudinary } = require('../config/cloudinary.config')
-// const cloudinary = require('../config/cloudinary.config')
-// const { CloudinaryStorage } = require("multer-storage-cloudinary");
 
+/* ----------------------------------------------------------------------------------------------------------------*/
 /* ----------------------------------------------------------------------------------------------------------------*/
 
 // Display site - "all restaurants"
@@ -36,20 +35,9 @@ router.get('/all', isLoggedIn, (req, res, next) => {
     })
 })
 
-// Display site - "restaurant details"
-router.get('/details/:id', (req, res, next) =>{
-    const id = req.params.id
-    Restaurant.findById(id)
-    .then(restaurantFromDB => {
-        res.render('restaurants/details', {restaurant: restaurantFromDB})
-    })
-    .catch(err => {
-        next(err)
-    })
-})
-
+// Use Filters on site - "all restaurants"
 router.post('/all/filtered', isLoggedIn, (req, res, next) => {
-    const { filteredTags} = req.body
+    const { filteredTags } = req.body
     const user = req.user
     Restaurant.find({tags: {$in: [filteredTags]}})
     .then(restaurantFromDB => {
@@ -58,51 +46,79 @@ router.post('/all/filtered', isLoggedIn, (req, res, next) => {
     .catch(err => {
         next(err)
     })
-
 })
 
+/* ----------------<-<-<-<-<-<-<-<-<<--<-<-<-<-<-<<--<<-<-<-<-<-<-<--<-<-< */
+// // Get the "my-restaurants" data incl. the coordinates in a json format from the logged in user
+// router.get('/my-restaurants/restaurant-data', isLoggedIn, (req, res, next) => {
+//     const userId = req.user._id
+    
+//     User.findById(userId)
+//     .populate('restaurants')
+//     .then(userFromDB => {
+//         res.json(userFromDB.restaurants)
+//         // console.log(res.json(userFromDB.restaurants));
+//     })
+//     .catch(err => {
+//         next(err)
+//     })    
+// })
+/* ----------------<-<-<-<-<-<-<-<-<<--<-<-<-<-<-<<--<<-<-<-<-<-<-<--<-<-< */
 
+// Display site - "my-restaurants"
 router.get("/my-restaurants", isLoggedIn, (req, res, next) => {
-
+    
     const userId = req.user._id
-    const { filteredTags} = req.body
-
+    const { filteredTags } = req.body
     const user = req.user
     
     User.findById(userId)
     .populate('restaurants')
     .then(userFromDB => {
+        
+        res.render('restaurants/my-restaurants', {restaurants: userFromDB.restaurants, newTags: newTags, test:  filteredTags, user: user})
     
-    res.render('restaurants/my-restaurants', {restaurants: userFromDB.restaurants, newTags: newTags, test:  filteredTags, user: user})
-
     })
     .catch(err => {
         next(err)
     })
 });
 
-// 
+
+// Use Filters on site - "My-restaurants"
 router.post('/my-restaurants/filtered', isLoggedIn, (req, res, next) => {
     
     const user = req.user
     const { filteredTags} = req.body
     let restaurantsFiltered = []
     const userId = req.user._id
-
+    
     User.findById(userId)
     .populate('restaurants')
     .then(userFromDB => {
         // console.log(filteredTags)
-
+        
         for(let i = 0; i<userFromDB.restaurants.length; i++) {
-
+            
             // console.log("out of if: ", userFromDB.restaurants[i].tags)
-
+            
             if(userFromDB.restaurants[i].tags.includes(filteredTags)){
                 restaurantsFiltered.push(userFromDB.restaurants[i])
             } 
         }
         res.render('restaurants/my-restaurants', {restaurants: restaurantsFiltered, newTags: newTags, test:  filteredTags, user: user})
+    })
+    .catch(err => {
+        next(err)
+    })
+})
+
+// Display site - "restaurant details"
+router.get('/details/:id', (req, res, next) =>{
+    const id = req.params.id
+    Restaurant.findById(id)
+    .then(restaurantFromDB => {
+        res.render('restaurants/details', {restaurant: restaurantFromDB})
     })
     .catch(err => {
         next(err)
@@ -120,7 +136,6 @@ router.get('/all/add', (req, res, next) => {
         next(err)
     })
 })
-
 
 // Add a new restaurant to global db"
 router.post('/all',  isLoggedIn, fileUploader.single('imageUrl'), (req, res, next) => {
@@ -308,10 +323,15 @@ router.get('/all/delete/:id',  isLoggedIn, (req, res, next) =>{
 
 /* --------------------------------------------- routes for Maps START -----------------------------------*/
 
-// Get the restaurant data incl. the coordinates in a json format
-router.get('/all/restaurant-data', (req, res, next) => {
+// Get the restaurant data incl. the coordinates in a json format [NEW VERSION]
+router.post('/restaurant-data', (req, res, next) => {
+    console.log(req.body);
 
-    Restaurant.find()
+    Restaurant.find({
+        '_id': { $in:
+            req.body.idArr
+        }
+    })
     .then(restaurants => {
         res.json(restaurants)
     })
@@ -320,20 +340,33 @@ router.get('/all/restaurant-data', (req, res, next) => {
     })
 })
 
-// Get the "my-restaurants" data incl. the coordinates in a json format from the logged in user
-router.get('/my-restaurants/restaurant-data', isLoggedIn, (req, res, next) => {
-    const userId = req.user._id
+
+// // Get the restaurant data incl. the coordinates in a json format
+// router.get('/all/restaurant-data', (req, res, next) => {
+
+//     Restaurant.find()
+//     .then(restaurants => {
+//         res.json(restaurants)
+//     })
+//     .catch(err => {
+//         next(err)
+//     })
+// })
+
+// // Get the "my-restaurants" data incl. the coordinates in a json format from the logged in user
+// router.get('/my-restaurants/restaurant-data', isLoggedIn, (req, res, next) => {
+//     const userId = req.user._id
     
-    User.findById(userId)
-    .populate('restaurants')
-    .then(userFromDB => {
-        res.json(userFromDB.restaurants)
-        // console.log(res.json(userFromDB.restaurants));
-    })
-    .catch(err => {
-        next(err)
-    })    
-})
+//     User.findById(userId)
+//     .populate('restaurants')
+//     .then(userFromDB => {
+//         res.json(userFromDB.restaurants)
+//         // console.log(res.json(userFromDB.restaurants));
+//     })
+//     .catch(err => {
+//         next(err)
+//     })    
+// })
 
 // Get the restaurant data from the restaurant, which is displayed in the detail view
 router.get('/details/restaurant-data/:id', (req, res, next) => {
