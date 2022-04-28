@@ -19,11 +19,14 @@
 <p>{{test}}</p>
 
 <form action="/all/filtered" method="POST">
+<div class="tag-filter">
   <select name="filteredTags">
     {{#each newTags}}
     <option>{{name}}</option>
     {{/each}}
   </select>
+  </div>
+
   <button type="submit">Filter</button>
 </form>
 

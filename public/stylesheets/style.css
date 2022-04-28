@@ -17,6 +17,9 @@ h1 {
   background-image: url('/images/empty-star.png') ;
 }
 
+
+/* Navbar Styling START*/
+
 #ul-layout {
   list-style-type: none;
   margin: 0;
@@ -37,6 +40,29 @@ h1 {
   text-decoration: none;
 }
 
+/* Change the link color to #111 (black) on hover */
+.il-layout a:hover {
+  background-color: #111;
+}
+/* Navbar Styling END*/
+
+
+
+/* Select Tag Styyling START */
+.tag-filter{
+  display:inline-block;
+  vertical-align:top;
+  overflow:hidden;
+}
+
+.tag-filter select option {
+  display:inline-block;
+  color: red;
+}
+
+
+/* Select Tag Styyling END */
+
 /* Restaurant Styling START */
 .restaurant-img {
   width: 100px;
@@ -44,10 +70,7 @@ h1 {
 }
 /* Restaurant Styling END */
 
-/* Change the link color to #111 (black) on hover */
-.il-layout a:hover {
-  background-color: #111;
-}
+
 
 /* Map styling START */
 #marker {
