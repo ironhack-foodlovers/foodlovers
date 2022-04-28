@@ -1,68 +1,67 @@
 
+<div class="container-add">
 
-<div class="container-add"></div>
+</div>
 <form action="/all" method="POST" enctype="multipart/form-data">
-<table class="add-form">
+    <table class="add-form">
         <tr>
-        <td>
-            <label  for="">Restaurant name: </label>	
-        </td>  
-        <td>
-            <input type="text" name="name">
-        </td> 
+            <td><label  for="">Restaurant name: </label></td>  
+            <td><input type="text" name="name"></td> 
         </tr>
-         <tr>
-           <td> <label  for="">Street: </label></td>	
+        <tr>
+            <td><label  for="">Street: </label></td>	
             <td><input type="text" name="street"></td>
-        </td>
         </tr>
         <tr>
-           <td><label  for="">Num: </label></td>	
+            <td><label  for="">Num: </label></td>	
             <td><input type="number" name="houseNumber"></td>
         </tr>
-       <tr>
-          <td><label for="">ZIP: </label></td>
-        <td><input type="text" name="zipCode"></td>
-       </tr>
         <tr>
-          <td><label for="">City*: </label>	</td>
-          <td><input type="text" name="city" required></td>
-       </tr>
+            <td><label for="">ZIP: </label></td>
+            <td><input type="text" name="zipCode"></td>
+        </tr>
         <tr>
-           <td><label  for="">Country: </label>	</td>
-           <td><input type="text" name="country"></td>
-      </tr>
-       <tr>
-           <td><label  for="">Phone: </label>	</td>
+            <td><label for="">City*: </label></td>
+            <td><input type="text" name="city" required></td>
+        </tr>
+        <tr>
+            <td><label  for="">Country: </label></td>
+            <td><input type="text" name="country"></td>
+        </tr>
+        <tr>
+            <td><label  for="">Phone: </label></td>
             <td><input type="text" name="telephone"></td>
-       </tr>
+        </tr>
         <tr>
-           <td><label class="label-add" for="">Website: </label>	</td>
-           <td><input type="url" name="url"></td>
-       </tr>
+            <td><label class="label-add" for="">Website: </label></td>
+            <td><input type="url" name="url"></td>
+        </tr>
         <tr>
-            <td><label  for="">Image: </label></td>	
+            <td><label for="">Image: </label></td>	
             <td><input type="file" name="imageUrl"></td>
-       </tr>
-       <tr>
+            {{!-- The two hidden values are needed to store the current imageUrl and publichImageId for deleting
+            the image in cloudinary, which will be replaced by the new image --}}
+            <input type="text" name="existingImage" hidden value="{{imageUrl}}">
+            <input type="text" name="existingPublicImageId" hidden value="{{publicImageId}}">
+        </tr>
+        <tr>
             <td><label  for="">Tags: </label>	</td>
-      <td><select name="tags"  multiple>
-{{#each tags}}
-<option   >{{name}}</option>
-{{/each}}
-</select></td>
-     </tr>
-       <tr>
-         <td><label class="label-add" for="">Description: </label></td>	
-           <td><input type="text" name="description"></td>
-       </tr>
-
-<tr>
-    <td></td>
-<td>
-	<button class="sendToBtn" type="submit">Add</button>
-</td>
-    </tr>
+            <td>
+                <select name="tags"  multiple>
+                    {{#each tags}}
+                        <option>{{name}}</option>
+                    {{/each}}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><label class="label-add" for="">Description: </label></td>	
+            <td><input type="text" name="description"></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button class="sendToBtn" type="submit">Add</button></td>
+        </tr>
+    </table>
 </form>
-</table>
-</div>
+

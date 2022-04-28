@@ -1,85 +1,79 @@
 
 
-
 <div class="platzhalter"></div>
 
 <div class="platzhalter"></div>
 
-
-
-<form action="/my-restaurants/filtered" method="POST">
-<div class="tag-filter">
-  <select name="filteredTags" multiple>
-    {{#each newTags}}
-    <option>{{name}}</option>
-    {{/each}}
-  </select>
-  </div>
-  <div class="test">
-   <button class="filterBtn" type="submit">Filter</button>
-   <button class="createBtn" onclick="window.location.href = '/all/add';">Add new Restaurant</button>
-   </div>
-</form>
+<div class="section-one">
+  <form action="/my-restaurants/filtered" method="POST">
+    <div class="tag-filter">
+      <select name="filteredTags" multiple>
+        {{#each newTags}}
+        <option>{{name}}</option>
+        {{/each}}
+      </select>
+      </div>
+      <div class="test">
+      <button class="filterBtn" type="submit">Filter</button>
+      </div>
+  </form>
+  <button class="createBtn" onclick="window.location.href = '/all/add';">Add new Restaurant</button>
+</div>
 
 <div class="container">
 
-<div class="restaurant-container">
+  <div class="restaurant-container">
+    {{#each restaurants}}
 
-  
-{{#each restaurants}}
+    <div class="restaurant">
 
-<div class="restaurant">
+      {{!-- Display Image --}}
+      <div class="image-container">
+        <img src="{{imageUrl}}" class="restaurant-img" alt="{{name}}">
+      </div>
 
- {{!-- Display Image --}}
- <div class="image-container">
-  <img src="{{imageUrl}}" class="restaurant-img" alt="{{name}}">
-</div>
+      <div class="info-container">
 
-<div class="info-container">
+        <div class="first-line-restaurant">
+          {{!-- Name --}}
+          <h1 class="headline-restaurant">{{name}}</h1>
+          {{!-- If star is filled or empty --}}
+          {{#if liked}}  
+            <img class="addBtn" src="/images/full-star.png " alt="add" onclick="window.location.href = '/all/remove/{{_id}}';"></img>
+          {{else}}
+            <img class="addBtn" src="/images/empty-star.png " alt="add" onclick="window.location.href = '/all/add-favorite/{{_id}}';"></img>
+          {{/if}}
+        </div>
 
-  <div class="first-line-restaurant">
-  {{!-- Name --}}
-  <h1 class="headline-restaurant">{{name}}</h1>
-   {{!-- If star is filled or empty --}}
- {{#if liked}}
-  <img class="addBtn" src="/images/full-star.png " alt="add" onclick="window.location.href = '/all/remove/{{_id}}';"></img>
-  {{else}}
-  <img class="addBtn" src="/images/empty-star.png " alt="add" onclick="window.location.href = '/all/add-favorite/{{_id}}';"></img>
-  {{/if}}
+        {{!-- Link to Detail Page --}}
+        <div class="details-container">
+          <a href="/details/{{_id}}">Take a closer look...</a>
+        </div>
+
+        {{!-- Tags --}}
+        <div class="tag-container">
+          {{#each tags}}
+          <p class="tags">{{this}}</p>
+          {{/each}}
+        </div>
+
+        {{!-- Buttons --}}
+        <div class="button-container-restaurant">
+          <button class="restaurantBtn" onclick="window.location.href = '/all/edit/{{_id}}';">Edit</button>
+          <button class="restaurantBtn" onclick="window.location.href = '/all/delete/{{_id}}';">Delete</button>
+        </div>
+      </div>
+    </div>
+    {{!-- This hidden ID is needed for the map --}}
+    <p class="restaurant-object-id" hidden>{{_id}}</p>
+    {{/each}}
   </div>
 
-  {{!-- Link to Detail Page --}}
-  <div class="details-container">
-  <a href="/details/{{_id}}">Take a closer look...</a>
+    {{!-- -------------------------------------------Map Start-------------------------------------------- --}}
+  <div class="map-container" style="position:fixed; right: 0;">
+    <div id='map'></div>	
+    <script src="/js/map-all-restaurants.js"></script>
   </div>
-
-
- {{!-- Tags --}}
-  <div class="tag-container">
-  {{#each tags}}
-  <p class="tags">{{this}}</p>
-  {{/each}}
-  </div>
-
- {{!-- Buttons --}}
-  <div class="button-container-restaurant">
-  <button class="restaurantBtn" onclick="window.location.href = '/all/edit/{{_id}}';">Edit</button>
-  <button class="restaurantBtn" onclick="window.location.href = '/all/delete/{{_id}}';">Delete</button>
-  </div>
-
-
-  </div>
-</div>
-  {{!-- This hidden ID is needed for the map --}}
-  <p class="restaurant-object-id" hidden>{{_id}}</p>
-{{/each}}
-
-</div>
-{{!-- -------------------------------------------Map Start-------------------------------------------- --}}
-<div class="map-container" style="position:fixed; right: 0;">
-<div id='map'></div>	
-<script src="/js/map-all-restaurants.js"></script>
-</div>
-{{!-- -------------------------------------------Map End-------------------------------------------- --}}
+    {{!-- -------------------------------------------Map End-------------------------------------------- --}}
 
 </div>

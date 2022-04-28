@@ -29,7 +29,7 @@ axios.get(`/details/restaurant-data/${id}`)
 
         // create the marker on map
         new mapboxgl.Marker({
-            color: '#7F200B',
+            color: '#0A385C',
         })
         .setLngLat(coord)
         .setPopup(popup)

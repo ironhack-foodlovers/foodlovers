@@ -9,7 +9,7 @@
       <title>{{appTitle}}</title>
 
       {{!-- Add Favicon here --}}
-      <link rel="icon" type="image/x-icon" href="/public/images/favicon2.png"/>
+      <link rel="icon" type="image/png" href="/images/favicon2.png"/>
 
       <link rel="stylesheet" href="/stylesheets/style.css" />
       <script src='https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.js'></script>
@@ -19,27 +19,24 @@
    </head>
 
    <body>
-
       <ul id="ul-layout">
+         <div class="navbar-left">
+            <li> <img class="logo" id="img-index"src="/images/logo.png " style="margin-right: 20px;" onclick="window.location.href = '/';" alt="logo"></img></li>
+         </div>
 
-<div class="navbar-left">
-  <li> <img class="logo" id="img-index"src="/images/logo.png " style="margin-right: 20px;" onclick="window.location.href = '/';" alt="logo"></img></li>
-  </div>
-
-<div class="navbar-right">
-
-{{#if user}}
-{{#with user}}
-  <li class="il-layout"><a href="/my-restaurants" >My restaurants</a></li>
-  <li class="il-layout"><a href="/all">All restaurants</a></li>
-   <li class="il-layout"><a href="/logout">logout</a></li>
- {{/with}}
- {{else}}
- <li class="il-layout"><a href="/login">Login</a></li>
- <li class="il-layout"><a href="/signup" >Signup</a></li>
-{{/if}}
-</div>
-</ul>
+         <div class="navbar-right">
+            {{#if user}}
+               {{#with user}}
+               <li class="il-layout"><a href="/my-restaurants" >My restaurants</a></li>
+               <li class="il-layout"><a href="/all">All restaurants</a></li>
+               <li class="il-layout"><a href="/logout">logout</a></li>
+               {{/with}}
+            {{else}}
+               <li class="il-layout"><a href="/login">Login</a></li>
+               <li class="il-layout"><a href="/signup" >Signup</a></li>
+            {{/if}}
+         </div>
+      </ul>
 
       {{{body}}}
 
