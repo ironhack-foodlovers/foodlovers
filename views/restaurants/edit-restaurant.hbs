@@ -1,3 +1,21 @@
+
+<ul id="ul-layout">
+ <div class="navbar-left">
+  <li class="il-layout"><a href="/my-restaurants">My restaurants</a></li>
+  <li class="il-layout"><a href="/all">All restaurants</a></li>
+</div>
+
+<div class="navbar-center">
+  <li> <img class="logo" src="/images/logo.png " alt="logo"></img></li>
+  </div>
+
+<div class="navbar-right">
+ <li class="il-layout"><a href="/logout">Logout </a></li>
+  <li class="il-layout"> {{#with user}}<p>Hello {{username}}</p>{{/with}}</li>
+</div>
+</ul>
+
+
 {{#with restaurant}}
 
 {{!-- Display Image --}}
