@@ -23,33 +23,24 @@
  <img class="addBtn" src="/images/empty-star.png " alt="add" onclick="window.location.href = '/all/remove/{{_id}}';"></img>
  {{/if}}
 
-	<h1>{{name}}</h1>
+{{!-- Link to Detail Page --}}
+<a href="/details/{{_id}}">Details</a>
 
-	<h4>Adresse:</h4>
-    <p>{{street}} {{houseNumber}}</p>
-    <p>{{zipCode}}, {{city}}</p>
-    <p>{{country}}</p>
+<h1>{{name}}</h1>
 
-    <h4>Kontakt:</h4>
-    <p>{{telephone}}</p>
-    <p>{{url}}</p>
+<h4>Tags:</h4>
 
-     <h4>Tags:</h4>
+{{#each tags}}
+    <p>{{this}}</p>
+{{/each}}
 
-    {{#each tags}}
-        <p>{{this}}</p>
-    {{/each}}
+<h4>Liked:</h4>
+<p>{{liked}}</p>
 
-    <h4>Beschreibung:</h4>
-    <p>{{description}}</p>
+<button onclick="window.location.href = '/all/edit/{{_id}}';">Edit</button>
+<button onclick="window.location.href = '/all/remove/{{_id}}';">Remove from favorites</button>
 
-      <h4>Liked:</h4>
-    <p>{{liked}}</p>
-
-    <button onclick="window.location.href = '/all/edit/{{_id}}';">Edit</button>
-    <button onclick="window.location.href = '/all/remove/{{_id}}';">Remove from favorites</button>
-
-    <hr>
+<hr>
 
 {{/each}}
 

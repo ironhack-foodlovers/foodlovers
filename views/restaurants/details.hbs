@@ -1,0 +1,37 @@
+{{#with restaurant}}
+<h1>{{name}}</h1>
+
+<h4>Adresse:</h4>
+<p>{{street}} {{houseNumber}}</p>
+<p>{{zipCode}}, {{city}}</p>
+<p>{{country}}</p>
+
+<h4>Kontakt:</h4>
+<p>{{telephone}}</p>
+<a href="{{url}}">Website</a>
+
+<h4>Tags:</h4>
+{{#each tags}}
+<p>{{this}}</p>
+{{/each}}
+
+<h4>Beschreibung:</h4>
+<p>{{description}}</p>
+
+<h4>Liked:</h4>
+<p>{{liked}}</p>
+
+<button onclick="window.location.href = '/all/edit/{{_id}}';">Edit</button>
+<button onclick="window.location.href = '/all/delete/{{_id}}';">Delete</button>
+
+{{!-- This hidden ID is needed for the map --}}
+<p id="restaurant-object-id" hidden>{{_id}}</p>
+
+{{/with}}
+
+{{!-- -------------------------------------------Map Start-------------------------------------------- --}}
+
+<div id='map' style='width: 75vw; height: 60vh;'></div>	
+<script src="/js/map-detail-restaurant.js"></script>
+
+{{!-- -------------------------------------------Map End-------------------------------------------- --}}
