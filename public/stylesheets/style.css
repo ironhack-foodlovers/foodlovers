@@ -3,7 +3,6 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
-
 a {
   color: #00b7ff;
 }
@@ -38,12 +37,17 @@ h1 {
   text-decoration: none;
 }
 
+/* Restaurant Styling START */
+.restaurant-img {
+  width: 100px;
+  height: auto;
+}
+/* Restaurant Styling END */
+
 /* Change the link color to #111 (black) on hover */
 .il-layout a:hover {
   background-color: #111;
 }
-
-
 
 /* Map styling START */
 #marker {

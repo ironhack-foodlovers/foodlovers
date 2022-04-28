@@ -1,5 +1,5 @@
 <h1>Add a new Restaurant</h1>
-<form action="/all" method="POST">
+<form action="/all" method="POST" enctype="multipart/form-data">
 	<ul>
         <li>
             <label for="">Restaurant name: </label>	
@@ -32,6 +32,10 @@
         <li>
             <label for="">Website: </label>	
             <input type="url" name="url">
+        </li>
+        <li>
+            <label for="">Image: </label>	
+            <input type="file" name="imageUrl">
         </li>
         <li>
             <label for="">Tags: </label>	

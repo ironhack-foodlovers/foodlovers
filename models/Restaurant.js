@@ -16,6 +16,8 @@ const restaurantSchema = new Schema(
     telephone: String,
     url: String,
 
+    imageUrl: String,
+
     tags: [],
     description: String,
     liked: Boolean,
