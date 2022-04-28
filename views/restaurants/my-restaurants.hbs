@@ -1,26 +1,12 @@
 
-<ul id="ul-layout">
- <div class="navbar-left">
-  <li class="il-layout"><a href="/my-restaurants" style="text-decoration: underline #133E5C;">My restaurants</a></li>
-  <li class="il-layout"><a href="/all">All restaurants</a></li>
-</div>
 
-<div class="navbar-center">
-  <li> <img class="logo" src="/images/logo.png "  onclick="window.location.href = '/';" alt="logo"></img></li>
-  </div>
-
-<div class="navbar-right">
- <li class="il-layout"><a href="/logout">Logout </a></li>
-  <li class="il-layout"> {{#with user}}<p>Hello {{username}}</p>{{/with}}</li>
-</div>
-</ul>
 
 <div class="platzhalter"></div>
 
 <div class="platzhalter"></div>
 
 
-<form action="/all/filtered" method="POST">
+<form action="/my-restaurants/filtered" method="POST">
 <div class="tag-filter">
   <select name="filteredTags" multiple>
     {{#each newTags}}
@@ -43,6 +29,8 @@
 <div class="container">
 
 <div class="restaurant-container">
+
+  
 {{#each restaurants}}
 
 <div class="restaurant">
@@ -58,7 +46,7 @@
   {{!-- Name --}}
   <h1 class="headline-restaurant">{{name}}</h1>
    {{!-- If star is filled or empty --}}
-  {{#if liked}}
+ {{#if liked}}
   <img class="addBtn" src="/images/full-star.png " alt="add" onclick="window.location.href = '/all/remove/{{_id}}';"></img>
   {{else}}
   <img class="addBtn" src="/images/empty-star.png " alt="add" onclick="window.location.href = '/all/add-favorite/{{_id}}';"></img>
@@ -94,7 +82,7 @@
 </div>
 {{!-- -------------------------------------------Map Start-------------------------------------------- --}}
 <div class="map-container">
-<div id='map' style='width: 40vw; height: 100vh;'></div>	
+<div id='map'></div>	
 <script src="/js/map-all-restaurants.js"></script>
 </div>
 {{!-- -------------------------------------------Map End-------------------------------------------- --}}

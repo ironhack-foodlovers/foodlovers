@@ -1,20 +1,10 @@
 
 
-
-<h1>{{appTitle}} 🚀</h1>
-<p>Welcome you litte Schmackofatz!</p>
-
-<link rel="stylesheet" href="style.css">
-<p>Das ist Lilly</p>
-<p>Das ist Jonathans 2. Change</p>
-
-{{#if status}}
-<p>Logged in</p>
-
-{{/if}}
+<div class="container-index">
+    <h1 class="headline-index">Welcome Schnabuleur</h1>
+ {{#with user}}<h1 class="headline-index">{{username}}!</h1>
+ {{/with}}
+ </div>
 
 
-
-<a href="/signup">Signup 👋</a>
-<a href="/login">login 👋</a>
 

@@ -1,89 +1,75 @@
 
-<ul id="ul-layout">
- <div class="navbar-left">
-  <li class="il-layout"><a href="/my-restaurants">My restaurants</a></li>
-  <li class="il-layout"><a href="/all">All restaurants</a></li>
-</div>
-
-<div class="navbar-center">
-  <li> <img class="logo" src="/images/logo.png " alt="logo"></img></li>
-  </div>
-
-<div class="navbar-right">
- <li class="il-layout"><a href="/logout">Logout </a></li>
-  <li class="il-layout"> {{#with user}}<p>Hello {{username}}</p>{{/with}}</li>
-</div>
-</ul>
 
 
 {{#with restaurant}}
 
-{{!-- Display Image --}}
-<img src="{{imageUrl}}" class="restaurant-img" alt="{{name}}">
 
-<h1>Edit: {{name}}</h1>
 
-<form action="/all/edit/{{_id}}" method="POST" enctype="multipart/form-data">
-    <ul>
-        <li>
-            <label for="">Restaurant name: </label>	
-            <input type="text" name="name" value="{{name}}">
-        </li>
-        <li>
-            <label for="">Street: </label>	
-            <input type="text" name="street" value="{{street}}">
-        </li>
-        <li>
-            <label for="">Num: </label>	
-            <input type="number" name="houseNumber" value="{{houseNumber}}">
-        </li>
-        <li>
-            <label for="">ZIP: </label>
-            <input type="text" name="zipCode" value="{{zipCode}}">
-        </li>
-        <li>
-            <label for="">City: </label>	
-            <input type="text" name="city" value="{{city}}">
-        </li>
-        <li>
-            <label for="">Country: </label>	
-            <input type="text" name="country" value="{{country}}">
-        </li>
-        <li>
-            <label for="">Phone: </label>	
-            <input type="text" name="telephone" value="{{telephone}}">
-        </li>
-        <li>
-            <label for="">Website: </label>	
-            <input type="url" name="url" value="{{url}}">
-        </li>
-        <li>
-            <label for="">Image: </label>	
-            <input type="file" name="imageUrl">
-            {{!-- The two hidden values are needed to store the current imageUrl and publichImageId for deleting
-            the image in cloudinary, which will be replaced by the new image --}}
-            <input type="text" name="existingImage" hidden value="{{imageUrl}}">
-            <input type="text" name="existingPublicImageId" hidden value="{{publicImageId}}">
-            
-        </li>
-        <li>
-            <label for="">Description: </label>	
-            <input type="text" name="description"value="{{description}}">
-        </li>
-    </ul>
+
+<div class="container-add"></div>
+  <h1 class="editH1">Edit: {{name}}</h1>
+<form action="/all/edit/{{_id}}" method="POST">
+   <table class="add-form">
+     
+        <tr>
+         <td>  <label for="">Restaurant name: </label>	</td> 
+         <td> <input type="text" name="name" value="{{name}}"></td> 
+        </tr>
+        <tr>
+           <td><label for="">Street: </label>	</td> 
+           <td><input type="text" name="street" value="{{street}}"></td> 
+        </tr>
+        <tr>
+          <td> <label for="">Num: </label>	</td> 
+          <td>  <input type="number" name="houseNumber" value="{{houseNumber}}"></td> 
+        </tr>
+        <tr>
+          <td><label for="">ZIP: </label></td> 
+           <td><input type="text" name="zipCode" value="{{zipCode}}"></td> 
+        </tr>
+        <tr>
+           <td><label for="">City: </label>	</td> 
+           <td><input type="text" name="city" value="{{city}}" required></td> 
+        </tr>
+        <tr>
+           <td><label for="">Country: </label>	</td> 
+           <td><input type="text" name="country" value="{{country}}"></td> 
+        </tr>
+        <tr>
+           <td> <label for="">Phone: </label>	
+           <td> <input type="text" name="telephone" value="{{telephone}}">
+        </tr>
+        <tr>
+          <td>  <label for="">Website: </label>	</td> 
+          <td><input type="url" name="url" value="{{url}}"></td> 
+        </tr>
+
+        <tr>
+           <td><label for="">Description: </label>	</td> 
+           <td> <input type="text" name="description"value="{{description}}"></td> 
+        </tr>
+   
 
     {{/with}}
 
-
-    <label for="">Tags: </label>	
-        <select name="tags"  multiple>
+<tr>
+    <td><label for="">Tags: </label>	</td> 
+     <td><select name="tags"  multiple>
 {{#each newTags}}
 <option>{{name}}</option>
 {{/each}}
-</select>
+</select> </td> 
+</tr>
 
-	<button type="submit">Save</button>
+<tr>
+    <td></td>
+<td>
+	<button class="sendToBtn" type="submit">Save</button>
+</td>
+    </tr>
 </form>
+</table>
+</div>
 
 
 

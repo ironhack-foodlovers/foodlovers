@@ -1,26 +1,28 @@
 
-<ul id="ul-layout">
- <div class="navbar-left"></div>
 
-<div class="navbar-center">
-  <li> <img class="logo" src="/images/logo.png " alt="logo"></img></li>
-  </div>
 
-<div class="navbar-right">
-<li class="il-layout"><a href="/signup">Signup</a></li>
-     <li class="il-layout"><a href="/login">Login</a></li>
-</div>
-</ul>
-
-<h1>Sign up</h1>
+<div class="container-login">
+<h1 class="login-header">Sign up</h1>
 <form action="/signup" method="POST">
-	<label for="username">Username: </label>
-	<input type="text" name="username">
-	<label for="password">Password: </label>
-	<input type="password" name="password">
-	
-	<button type="submit">Sign up</button>
-	{{#if message}}
+<table>
+		{{#if message}}
 		<p>{{message}}</p>
 	{{/if}}
+	
+<tr class="login-row">
+<td><label for="username">Username: </label>	
+<input type="text" name="username">	</td>
+</tr>
+
+<tr class="login-row">
+<td><label for="password">Password: </label>	
+<input type="password" name="password"></td>
+</tr>
+<tr>
+	<td><button class="sendToBtn" type="submit">Sign Up</button></td>
+</tr>
+
+</table>
 </form>
+
+</div>

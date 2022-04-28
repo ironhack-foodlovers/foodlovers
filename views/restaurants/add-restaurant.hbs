@@ -1,28 +1,6 @@
 
-<ul id="ul-layout">
-
- <div class="navbar-left">
-  <li class="il-layout"><a href="/my-restaurants">My restaurants</a></li>
-  <li class="il-layout"><a href="/all">All restaurants</a></li>
-</div>
-
-<div class="navbar-center">
-  <li> <img class="logo" src="/images/logo.png " alt="logo"></img></li>
-  </div>
-
-<div class="navbar-right">
- <li class="il-layout"><a href="/logout">Logout </a></li>
-  <li class="il-layout"> {{#with user}}
-<p>Hello {{username}}</p>
-{{/with}}
-</li>
-</div>
-
-</ul>
-
 
 <div class="container-add"></div>
-
 <form action="/all" method="POST" enctype="multipart/form-data">
 <table class="add-form">
         <tr>
@@ -47,8 +25,8 @@
         <td><input type="text" name="zipCode"></td>
        </tr>
         <tr>
-          <td><label for="">City: </label>	</td>
-          <td><input type="text" name="city"></td>
+          <td><label for="">City*: </label>	</td>
+          <td><input type="text" name="city" required></td>
        </tr>
         <tr>
            <td><label  for="">Country: </label>	</td>
@@ -80,8 +58,9 @@
        </tr>
 
 <tr>
+    <td></td>
 <td>
-	<button class="createBtn" type="submit">Add</button>
+	<button class="sendToBtn" type="submit">Add</button>
 </td>
     </tr>
 </form>

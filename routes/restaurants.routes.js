@@ -281,6 +281,7 @@ if(!user.restaurants.includes(restaurantId)) {
         },)
         .then((updatedUser)=>{
             res.redirect('/all')
+            console.log("ADDED TO FAVOROTES")
         })
         .catch(err => {
             next(err)
