@@ -12,7 +12,9 @@ const isLoggedOut = require("../middleware/isLoggedOut");
 const isLoggedIn = require("../middleware/isLoggedIn");
 
 //for cloudinary
-const fileUploader = require('../config/cloudinary.config')
+const {fileUploader, cloudinary } = require('../config/cloudinary.config')
+// const cloudinary = require('../config/cloudinary.config')
+// const { CloudinaryStorage } = require("multer-storage-cloudinary");
 
 /* ----------------------------------------------------------------------------------------------------------------*/
 
@@ -20,13 +22,13 @@ const fileUploader = require('../config/cloudinary.config')
 router.get('/all', isLoggedIn, (req, res, next) => {
 
     const user = req.user
-    console.log(user)
+    // console.log(user)
 
     const liked = true;
   
     Restaurant.find()
     .then(restaurantFromDB => {
-        console.log(liked)
+        // console.log(liked)
         res.render('restaurants/all', {restaurants: restaurantFromDB, newTags: newTags, liked: liked, user: user})
     })
     .catch(err => {
@@ -66,13 +68,13 @@ router.get("/my-restaurants", isLoggedIn, (req, res, next) => {
     const { filteredTags} = req.body
 
     const user = req.user
-    console.log(userId)
-
+    
     User.findById(userId)
     .populate('restaurants')
     .then(userFromDB => {
-        console.log('Restaurants werden angezeigt');
-        res.render('restaurants/my-restaurants', {restaurants: userFromDB.restaurants, newTags: newTags, test:  filteredTags, user: user})
+    
+    res.render('restaurants/my-restaurants', {restaurants: userFromDB.restaurants, newTags: newTags, test:  filteredTags, user: user})
+
     })
     .catch(err => {
         next(err)
@@ -90,11 +92,11 @@ router.post('/my-restaurants/filtered', isLoggedIn, (req, res, next) => {
     User.findById(userId)
     .populate('restaurants')
     .then(userFromDB => {
-        console.log(filteredTags)
+        // console.log(filteredTags)
 
         for(let i = 0; i<userFromDB.restaurants.length; i++) {
 
-            console.log("out of if: ", userFromDB.restaurants[i].tags)
+            // console.log("out of if: ", userFromDB.restaurants[i].tags)
 
             if(userFromDB.restaurants[i].tags.includes(filteredTags)){
                 restaurantsFiltered.push(userFromDB.restaurants[i])
@@ -119,28 +121,20 @@ router.get('/all/add', (req, res, next) => {
     })
 })
 
-// router.post('/movies/create', fileUploader.single('movie-cover-image'), (req, res) => {
-//     const { title, description } = req.body;
-   
-//     Movie.create({ title, description, imageUrl: req.file.path })
-//       .then(newlyCreatedMovieFromDB => {
-//         console.log(newlyCreatedMovieFromDB);
-//       })
-//       .catch(error => console.log(`Error while creating a new movie: ${error}`));
-//   });
-
 
 // Add a new restaurant to global db"
 router.post('/all',  isLoggedIn, fileUploader.single('imageUrl'), (req, res, next) => {
     const {name, street, houseNumber, zipCode, city, country, telephone, url, tags, description} = req.body
     const liked = false;
+
+
     // take the individual address information and turn into URL-encoded UTF-8 string
     let restaurantaddress = encodeURI(`${street} ${houseNumber} ${zipCode} ${city} ${country}`)
 
     // request the forward geocoding api from mapbox & create the restaurant with the geo location
     axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${restaurantaddress}.json?access_token=${mapBoxAccessToken}`)
     .then(responseFromApi => {
-        console.log(responseFromApi.data.features[0].center)
+        // console.log(responseFromApi.data.features[0].center)
         const longLatRestaurant = responseFromApi.data.features[0].center
 
         Restaurant.create({
@@ -154,12 +148,13 @@ router.post('/all',  isLoggedIn, fileUploader.single('imageUrl'), (req, res, nex
             telephone: telephone,
             url: url,
             imageUrl: req.file.path,
+            publicImageId: req.file.filename,
             tags: tags,
             liked: liked,
             description: description
           })
         .then(restaurantFromDB => {
-            console.log(restaurantFromDB);
+            console.log(`Newly created restaurant: ${restaurantFromDB}`);
             res.redirect('/all')
         })
         .catch(err => {
@@ -178,13 +173,14 @@ router.get("/my-restaurants", (req, res, next) => {
  })   
 });
 
-// Edit a restaurant in global db
+// Display site - "edit a restaurant"
 router.get('/all/edit/:id',  isLoggedIn, (req, res, next) => { 
-    const user = req.user
-    const id = req.params.id
+
+  const user = req.user
+  const id = req.params.id
 	Restaurant.findById(id)
 		.then(restaurantFromDB => {
-            console.log(restaurantFromDB, newTags)
+      console.log(restaurantFromDB, newTags)
 			res.render('restaurants/edit-restaurant', { restaurant: restaurantFromDB, newTags: newTags, user: user})
 		})
 		.catch(err => {
@@ -192,18 +188,40 @@ router.get('/all/edit/:id',  isLoggedIn, (req, res, next) => {
 		})
 });
 
-// Display site - "edit a restaurant"
-router.post('/all/edit/:id',  isLoggedIn, (req, res, next) => {
-    const {name, street, houseNumber, zipCode, city, country, telephone, url, tags, description} = req.body
+// Edit a restaurant in global db
+router.post('/all/edit/:id',  isLoggedIn, fileUploader.single('imageUrl'), (req, res, next) => {
+    const {name, street, houseNumber, zipCode, city, country, telephone, url, existingImage, existingPublicImageId, tags, description} = req.body
     const id = req.params.id
-    
+
+    /* -------------------- Preparation for updating the restaurant image START --------------------*/
+    let imageUrl;
+    // the existing publicImageId
+    let publicImageId = existingPublicImageId
+
+    if (req.file) {
+        
+        // if a new image has been uploaded (req.file === true), 
+        // take the "old", "existing publicImageId" and delete if from cloudinary
+        cloudinary.uploader.destroy(existingPublicImageId)
+        
+        // if a new image has been uploaded (req.file === true), 
+        // make the imageUrl the new path and update the publicImageId to the new one as well
+        imageUrl = req.file.path;
+        publicImageId = req.file.filename
+
+    } else {
+        imageUrl = existingImage;
+        publicImageId = existingPublicImageId
+    }
+    /* -------------------- Preparation for updating the restaurant image END --------------------*/
+
     // take the individual address information and turn into URL-encoded UTF-8 string
     let restaurantaddress = encodeURI(`${street} ${houseNumber} ${zipCode} ${city} ${country}`)
 
     // request the forward geocoding api from mapbox & create the restaurant with the geo location
     axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${restaurantaddress}.json?access_token=${mapBoxAccessToken}`)
     .then(responseFromApi => {
-        console.log(responseFromApi.data.features[0].center)
+        // console.log(responseFromApi.data.features[0].center)
         const longLatRestaurant = responseFromApi.data.features[0].center
 
         Restaurant.findByIdAndUpdate(id, {
@@ -216,10 +234,13 @@ router.post('/all/edit/:id',  isLoggedIn, (req, res, next) => {
             geoCoordinates: longLatRestaurant,
             telephone: telephone,
             url: url,
+            imageUrl: imageUrl,
+            publicImageId: publicImageId,
             tags: tags,
             description: description
         }, { new: true })
         .then( () => {
+            console.log(`Publich Image ID 2: ${publicImageId}`); 
             res.redirect('/all')
         })
         .catch(err => {
@@ -228,13 +249,13 @@ router.post('/all/edit/:id',  isLoggedIn, (req, res, next) => {
     })
 })
 
-// Add a restaurant to the users favorite lis ('my-restaurants')
+// Add a restaurant to the users favorite list ('my-restaurants')
 router.get('/all/add-favorite/:id',  isLoggedIn, (req, res, next) => {
    
     const user = req.user
     const restaurantId = req.params.id
 
-    console.log(user.restaurants)
+    // console.log(user.restaurants)
 
 // check if clicked on restaurant in order to add to favorites is already in my-restaurants 
 if(!user.restaurants.includes(restaurantId)) {
@@ -253,8 +274,8 @@ if(!user.restaurants.includes(restaurantId)) {
 } else {
     Restaurant.find()
     .then(restaurantFromDB => {
-        console.log("Dieses restuarnat ist schon in der db")
-        res.render('restaurants/all', {restaurants: restaurantFromDB,  message: 'This restaurant is already on your list', newTags: newTags, user: user })
+      console.log("Dieses restuarnat ist schon in der db")
+      res.render('restaurants/all', {restaurants: restaurantFromDB,  message: 'This restaurant is already on your list', newTags: newTags, user: user })
     })
     .catch(err => {
         next(err)
@@ -268,7 +289,16 @@ router.get('/all/delete/:id',  isLoggedIn, (req, res, next) =>{
 
     const id = req.params.id
     Restaurant.findByIdAndDelete(id)
-    .then (() => {
+    .then (deletedRestaurant => {
+        
+
+        if (deletedRestaurant.imageUrl) {
+            // we also delete the image on cloudinary
+            cloudinary.uploader.destroy(deletedRestaurant.publicImageId)
+            console.log(deletedRestaurant.imageUrl);
+            console.log(deletedRestaurant.publicImageId);
+            console.log('Console Log nach dem Löschen');
+        }
         res.redirect('/all')
     })
     .catch(err => {
@@ -284,7 +314,6 @@ router.get('/all/restaurant-data', (req, res, next) => {
     Restaurant.find()
     .then(restaurants => {
         res.json(restaurants)
-        console.log(res.json(restaurants));
     })
     .catch(err => {
         next(err)
@@ -350,7 +379,7 @@ router.get('/all/remove/:id',  isLoggedIn, (req, res, next) =>{
         .then(savedObject => {
             Restaurant.findByIdAndUpdate(restaurantId,  {liked: false })
             .then(updatedLiked => {
-                console.log(updatedLiked)
+                // console.log(updatedLiked)
             })
 
             res.redirect('/my-restaurants')

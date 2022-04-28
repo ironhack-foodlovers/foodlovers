@@ -18,9 +18,12 @@
 
 {{#with restaurant}}
 
+{{!-- Display Image --}}
+<img src="{{imageUrl}}" class="restaurant-img" alt="{{name}}">
+
 <h1>Edit: {{name}}</h1>
 
-<form action="/all/edit/{{_id}}" method="POST">
+<form action="/all/edit/{{_id}}" method="POST" enctype="multipart/form-data">
     <ul>
         <li>
             <label for="">Restaurant name: </label>	
@@ -54,7 +57,15 @@
             <label for="">Website: </label>	
             <input type="url" name="url" value="{{url}}">
         </li>
-
+        <li>
+            <label for="">Image: </label>	
+            <input type="file" name="imageUrl">
+            {{!-- The two hidden values are needed to store the current imageUrl and publichImageId for deleting
+            the image in cloudinary, which will be replaced by the new image --}}
+            <input type="text" name="existingImage" hidden value="{{imageUrl}}">
+            <input type="text" name="existingPublicImageId" hidden value="{{publicImageId}}">
+            
+        </li>
         <li>
             <label for="">Description: </label>	
             <input type="text" name="description"value="{{description}}">
