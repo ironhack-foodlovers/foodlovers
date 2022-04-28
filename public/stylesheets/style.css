@@ -1,21 +1,35 @@
 body {
-  padding: 50px;
+  padding: 20px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+
+p{
+  color: #133E5C;
 }
 
 a {
   color: #00b7ff;
 }
 
-h1 {
-  color: 15px;
+
+button:hover{
+  box-shadow: 2px 2px #88888880;
+  cursor: pointer;
 }
 
-.addBtn{
-  width: 40px;
+
+
+/* Logo START*/
+
+.logo{
+  text-align: center;
+  width: 200px;
   height: auto;
-  background-image: url('/images/empty-star.png') ;
 }
+
+/* Logo END*/
+
 
 
 /* Navbar Styling START*/
@@ -25,7 +39,9 @@ h1 {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .il-layout {
@@ -34,21 +50,109 @@ h1 {
 
 .il-layout a {
   display: block;
-  color: white;
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
+  color: #133E5C;
 }
 
 /* Change the link color to #111 (black) on hover */
 .il-layout a:hover {
-  background-color: #111;
+  color:#AED7F5;
+}
+
+.navbar-left{
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.navbar-left{
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+
+.navbar-center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 /* Navbar Styling END*/
 
 
 
+/* Form START */
+form{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ 
+}
+
+.test{
+  height: 10em;
+  padding-top: 10px;
+}
+
+.aktueller-filter-container{
+  margin-top: -50px;
+  text-align: center ;
+}
+
+.message{
+  font-size: 24px;
+  margin-top: -30px;
+}
+/* Form END */
+
+/* Add Button START */
+.createBtn{
+background-color: #2c628b9a;
+color: white; 
+padding: 10px;
+border: none;
+border-radius: 5px;
+margin: 5px 0px 0px 25px;
+}
+/* Add Button END */
+
+/* Filter Button START */
+.filterBtn{
+background-color: #0A385C;
+width: 150px;
+color: white; 
+padding: 10px;
+border: none;
+border-radius: 5px;
+}
+/* Filter Button END */
+
+
+
+
+
+/* platzhalter START */
+.platzhalter{
+  height: 25px;
+}
+/* platzhalter END */
+
 /* Select Tag Styyling START */
+
+*:focus {
+  outline: none;
+}
+
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: 0;
+  padding:10px;
+  margin:-5px -20px -5px -5px;
+}
+
 .tag-filter{
   display:inline-block;
   vertical-align:top;
@@ -57,19 +161,125 @@ h1 {
 
 .tag-filter select option {
   display:inline-block;
-  color: red;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 20px;
+  background-color: #AED7F5;
+  
+ 
 }
 
 
 /* Select Tag Styyling END */
 
-/* Restaurant Styling START */
+
+
+/*Container for restuarnat list and map START */
+.container{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+ 
+}
+
+.restaurant-container{
+  display: flex;
+  width: 400px;
+  flex-direction: column;
+  justify-content: start;
+  align-items: flex-start;
+}
+
+.map-container{
+  display: flex;
+  justify-content: start;
+  align-items: flex-start
+}
+
+.info-container{
+  width:400px;
+  
+}
+
+.first-line-restaurant{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: -20px;
+}
+
+/*Container for restuarnat list and map END */
+
+/* Restaurants styling START */
+
+.restaurant{
+  display: flex;
+  justify-content: flex-start;
+  align-items: start;
+  background-color: #0A385C;
+  width: 680px;
+  color: white;
+  margin: 0px 0px 10px 0px;
+}
+
+
+.image-container{
+  padding: 50px;
+  width: 50px;
+}
+
+.info-container{
+  padding: 50px;
+}
+
+
 .restaurant-img {
-  width: 100px;
+  width: 50px;
   height: auto;
 }
-/* Restaurant Styling END */
 
+
+.tag-container{
+  display:inline-block;
+}
+.tags{
+  margin: 20px 20px 20px 0px;
+  padding: 10px;
+  border-radius: 20px;
+  background-color: #AED7F5; 
+}
+
+.headline-restaurant{
+  font-size: 24px;
+ font-weight: 100;
+ padding: 0;
+ margin: 0px;
+}
+
+.details-container a{
+  color: white;
+  font-style:italic;
+}
+
+.details-container{
+  margin: 10px 0px 10px 0px;
+}
+
+.addBtn{
+  width: 30px;
+}
+
+
+.restaurantBtn{
+background-color: #51AEF5;
+width: 150px;
+color: white; 
+padding: 10px;
+border: none;
+margin: 20px 20px 0px 0px;
+border-radius: 5px;
+}
+/* Restaurants styling END */
 
 
 /* Map styling START */

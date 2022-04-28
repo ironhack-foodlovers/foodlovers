@@ -48,10 +48,10 @@ router.get('/details/:id', (req, res, next) =>{
 
 router.post('/all/filtered', isLoggedIn, (req, res, next) => {
     const { filteredTags} = req.body
-
+    const user = req.user
     Restaurant.find({tags: {$in: [filteredTags]}})
     .then(restaurantFromDB => {
-        res.render('restaurants/all', {restaurants: restaurantFromDB, newTags: newTags, test:  filteredTags})
+        res.render('restaurants/all', {restaurants: restaurantFromDB, newTags: newTags, test:  filteredTags, user: user})
     })
     .catch(err => {
         next(err)
@@ -65,13 +65,14 @@ router.get("/my-restaurants", isLoggedIn, (req, res, next) => {
     const userId = req.user._id
     const { filteredTags} = req.body
 
+    const user = req.user
     console.log(userId)
 
     User.findById(userId)
     .populate('restaurants')
     .then(userFromDB => {
         console.log('Restaurants werden angezeigt');
-        res.render('restaurants/my-restaurants', {restaurants: userFromDB.restaurants, newTags: newTags, test:  filteredTags})
+        res.render('restaurants/my-restaurants', {restaurants: userFromDB.restaurants, newTags: newTags, test:  filteredTags, user: user})
     })
     .catch(err => {
         next(err)
@@ -80,6 +81,8 @@ router.get("/my-restaurants", isLoggedIn, (req, res, next) => {
 
 // 
 router.post('/my-restaurants/filtered', isLoggedIn, (req, res, next) => {
+    
+    const user = req.user
     const { filteredTags} = req.body
     let restaurantsFiltered = []
     const userId = req.user._id
@@ -97,7 +100,7 @@ router.post('/my-restaurants/filtered', isLoggedIn, (req, res, next) => {
                 restaurantsFiltered.push(userFromDB.restaurants[i])
             } 
         }
-        res.render('restaurants/my-restaurants', {restaurants: restaurantsFiltered, newTags: newTags, test:  filteredTags})
+        res.render('restaurants/my-restaurants', {restaurants: restaurantsFiltered, newTags: newTags, test:  filteredTags, user: user})
     })
     .catch(err => {
         next(err)
@@ -106,10 +109,10 @@ router.post('/my-restaurants/filtered', isLoggedIn, (req, res, next) => {
 
 // Display site - "form to add new restaurant"
 router.get('/all/add', (req, res, next) => {
-
+    const user = req.user
     Restaurant.find()
     .then(restaurantFromDB => {
-        res.render('restaurants/add-restaurant', {tags: newTags})
+        res.render('restaurants/add-restaurant', {tags: newTags, user: user})
     })
     .catch(err => {
         next(err)
@@ -169,19 +172,20 @@ router.post('/all',  isLoggedIn, fileUploader.single('imageUrl'), (req, res, nex
 // Display site - "my restaurant"
 router.get("/my-restaurants", (req, res, next) => {
     const userId = req.user._id
+    const user = req.user
     User.findOne({ userId }).then((found) => { 
-    res.render("restaurants/my-restaurants")
+    res.render("restaurants/my-restaurants", {user: user})
  })   
 });
 
 // Edit a restaurant in global db
 router.get('/all/edit/:id',  isLoggedIn, (req, res, next) => { 
-  
+    const user = req.user
     const id = req.params.id
 	Restaurant.findById(id)
 		.then(restaurantFromDB => {
             console.log(restaurantFromDB, newTags)
-			res.render('restaurants/edit-restaurant', { restaurant: restaurantFromDB, newTags: newTags})
+			res.render('restaurants/edit-restaurant', { restaurant: restaurantFromDB, newTags: newTags, user: user})
 		})
 		.catch(err => {
 			next(err)
@@ -250,7 +254,7 @@ if(!user.restaurants.includes(restaurantId)) {
     Restaurant.find()
     .then(restaurantFromDB => {
         console.log("Dieses restuarnat ist schon in der db")
-        res.render('restaurants/all', {restaurants: restaurantFromDB,  message: 'This restaurant is already on your list', newTags: newTags })
+        res.render('restaurants/all', {restaurants: restaurantFromDB,  message: 'This restaurant is already on your list', newTags: newTags, user: user })
     })
     .catch(err => {
         next(err)

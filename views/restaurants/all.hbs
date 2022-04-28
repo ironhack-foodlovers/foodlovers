@@ -1,67 +1,103 @@
 
 
-{{#with user}}
-<h1>Hello {{username}}</h1>
-{{/with}}
 
-<h1>Liste aller Restaurants</h1>
+<ul id="ul-layout">
+ <div class="navbar-left">
+  <li class="il-layout"><a href="/my-restaurants">My restaurants</a></li>
+  <li class="il-layout" style="text-decoration: underline #133E5C;"><a href="/all">All restaurants</a></li>
+</div>
 
-<button onclick="window.location.href = '/all/add';">Add new Restaurant</button>
+<div class="navbar-center">
+  <li> <img class="logo" src="/images/logo.png " alt="logo"></img></li>
+  </div>
 
-<hr />
+<div class="navbar-right">
+ <li class="il-layout"><a href="/logout">Logout </a></li>
+  <li class="il-layout"> {{#with user}}<p>Hello {{username}}</p>{{/with}}</li>
+</div>
+</ul>
 
-{{#if message}}
-		<p>{{message}}</p>
-	{{/if}}
+<div class="platzhalter"></div>
 
-<h3>Filter: </h3>
+<div class="platzhalter"></div>
 
-<p>{{test}}</p>
 
 <form action="/all/filtered" method="POST">
 <div class="tag-filter">
-  <select name="filteredTags">
+  <select name="filteredTags" multiple>
     {{#each newTags}}
     <option>{{name}}</option>
     {{/each}}
   </select>
   </div>
-
-  <button type="submit">Filter</button>
+  <div class="test">
+   <button class="filterBtn" type="submit">Filter</button>
+   <button class="createBtn" onclick="window.location.href = '/all/add';">Add new Restaurant</button>
+   </div>
 </form>
 
+<div class="aktueller-filter-container">
+{{#if test}}
+		<p class="message"> Aktueller Filter: {{this.test}}</p>
+	{{/if}}
+</div>
+<div class="container">
+
+<div class="restaurant-container">
 {{#each restaurants}}
 
-{{#if liked}}
- <img class="addBtn" src="/images/full-star.png " alt="add" onclick="window.location.href = '/all/add-favorite/{{_id}}';"></img>
-{{else}}
- <img class="addBtn" src="/images/empty-star.png " alt="add" onclick="window.location.href = '/all/add-favorite/{{_id}}';"></img>
-{{/if}}
+<div class="restaurant">
 
-{{!-- Display Image --}}
-<img src="{{imageUrl}}" class="restaurant-img" alt="{{name}}">
+ {{!-- Display Image --}}
+ <div class="image-container">
+  <img src="{{imageUrl}}" class="restaurant-img" alt="{{name}}">
+</div>
 
-{{!-- Link to Detail Page --}}
-<a href="/details/{{_id}}">Details</a>
+<div class="info-container">
 
-<h1>{{name}}</h1>
+  <div class="first-line-restaurant">
+  {{!-- Name --}}
+  <h1 class="headline-restaurant">{{name}}</h1>
+   {{!-- If star is filled or empty --}}
+  {{#if liked}}
+  <img class="addBtn" src="/images/full-star.png " alt="add" onclick="window.location.href = '/all/add-favorite/{{_id}}';"></img>
+  {{else}}
+  <img class="addBtn" src="/images/empty-star.png " alt="add" onclick="window.location.href = '/all/add-favorite/{{_id}}';"></img>
+  {{/if}}
+  </div>
 
- <h4>Tags:</h4>
-{{#each tags}}
-<p>{{this}}</p>
+  {{!-- Link to Detail Page --}}
+  <div class="details-container">
+  <a href="/details/{{_id}}">Take a closer look...</a>
+  </div>
+
+
+ {{!-- Tags --}}
+  <div class="tag-container">
+  {{#each tags}}
+  <p class="tags">{{this}}</p>
+  {{/each}}
+  </div>
+
+ {{!-- Buttons --}}
+ <div class="button-container-restaurant">
+<button class="restaurantBtn" onclick="window.location.href = '/all/edit/{{_id}}';">Edit</button>
+<button class="restaurantBtn" onclick="window.location.href = '/all/delete/{{_id}}';">Delete</button>
+</div>
+
+
+</div>
+</div>
 {{/each}}
 
-<button onclick="window.location.href = '/all/edit/{{_id}}';">Edit</button>
-<button onclick="window.location.href = '/all/delete/{{_id}}';">Delete</button>
-<hr />
-
-{{/each}}
-
-
+</div>
 {{!-- -------------------------------------------Map Start-------------------------------------------- --}}
-
-<div id='map' style='width: 75vw; height: 60vh;'></div>	
+<div class="map-container">
+<div id='map' style='width: 40vw; height: 100vh;'></div>	
 <script src="/js/map-all-restaurants.js"></script>
-
+</div>
 {{!-- -------------------------------------------Map End-------------------------------------------- --}}
 
+
+
+</div>
