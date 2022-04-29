@@ -85,20 +85,32 @@ router.post('/my-restaurants/filtered', isLoggedIn, (req, res, next) => {
     const { filteredTags} = req.body
     let restaurantsFiltered = []
     const userId = req.user._id
-    
+   
     User.findById(userId)
     .populate('restaurants')
     .then(userFromDB => {
-        // console.log(filteredTags)
+        //console.log("originalTag", userFromDB.restaurants)
         
         for(let i = 0; i<userFromDB.restaurants.length; i++) {
-            
-            // console.log("out of if: ", userFromDB.restaurants[i].tags)
-            
-            if(userFromDB.restaurants[i].tags.includes(filteredTags)){
+         
+            console.log("IN DB:   ",userFromDB.restaurants[i].tags)
+            console.log("FILTERED TAGS   :   ",filteredTags)
+      
+            if( typeof filteredTags === "string" ) {
+                if(userFromDB.restaurants[i].tags.includes(filteredTags)){
+                    restaurantsFiltered.push(userFromDB.restaurants[i])
+                    console.log("IN: ",filteredTags)
+                } 
+
+            } else {
+
+            if(filteredTags.every( v => userFromDB.restaurants[i].tags.includes(v))){
                 restaurantsFiltered.push(userFromDB.restaurants[i])
+                console.log("IN: ",filteredTags)
             } 
         }
+        }
+    
         res.render('restaurants/my-restaurants', {restaurants: restaurantsFiltered, newTags: newTags, test:  filteredTags, user: user})
     })
     .catch(err => {
