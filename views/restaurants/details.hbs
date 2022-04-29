@@ -8,13 +8,13 @@
 {{#with restaurant}}
 
  {{!-- Display Image --}}
- <div class="details-left">
+ <div class="detailsColumn">
   <div class="image-container-details">
   <img src="{{imageUrl}}" class="restaurant-img-details" alt="{{name}}">
 </div>
 </div>
 
-<div class="details-right">
+<div class="detailsColumn">
 
 <h1>{{name}}</h1>
 
@@ -28,7 +28,7 @@
 <a href="{{url}}">Website</a>
 </div>
 
-<div class="details-center">
+<div class="detailsColumn">
 <h4>Tags:</h4>
 {{#each tags}}
 <p>{{this}}</p>
@@ -41,7 +41,7 @@
 <p id="restaurant-object-id" hidden>{{_id}}</p>
 
 
-<div class="details-button">
+<div class="detailsColumn">
  {{!-- Buttons --}}
  <div class="button-container-restaurant">
 <button class="restaurantBtn" onclick="window.location.href = '/all/edit/{{_id}}';">Edit</button>
