@@ -48,23 +48,6 @@ router.post('/all/filtered', isLoggedIn, (req, res, next) => {
     })
 })
 
-/* ----------------<-<-<-<-<-<-<-<-<<--<-<-<-<-<-<<--<<-<-<-<-<-<-<--<-<-< */
-// // Get the "my-restaurants" data incl. the coordinates in a json format from the logged in user
-// router.get('/my-restaurants/restaurant-data', isLoggedIn, (req, res, next) => {
-//     const userId = req.user._id
-    
-//     User.findById(userId)
-//     .populate('restaurants')
-//     .then(userFromDB => {
-//         res.json(userFromDB.restaurants)
-//         // console.log(res.json(userFromDB.restaurants));
-//     })
-//     .catch(err => {
-//         next(err)
-//     })    
-// })
-/* ----------------<-<-<-<-<-<-<-<-<<--<-<-<-<-<-<<--<<-<-<-<-<-<-<--<-<-< */
-
 // Display site - "my-restaurants"
 router.get("/my-restaurants", isLoggedIn, (req, res, next) => {
     
@@ -77,13 +60,23 @@ router.get("/my-restaurants", isLoggedIn, (req, res, next) => {
     .then(userFromDB => {
         
         res.render('restaurants/my-restaurants', {restaurants: userFromDB.restaurants, newTags: newTags, test:  filteredTags, user: user})
-    
+        
     })
     .catch(err => {
         next(err)
     })
 });
 
+/* !!!!!!!!!!!!!!!!!!!!!!!!Brauchen wir das hier noch? Habe ich auskommenitert und es hatte scheinbar keinen Effekt!!!!!!!!!!!!!!!!!!!!!!!!*/
+
+// // Display site - "my restaurant"
+// router.get("/my-restaurants", (req, res, next) => {
+//     const userId = req.user._id
+//     const user = req.user
+//     User.findOne({ userId }).then((found) => { 
+//     res.render("restaurants/my-restaurants", {user: user})
+//  })   
+// });
 
 // Use Filters on site - "My-restaurants"
 router.post('/my-restaurants/filtered', isLoggedIn, (req, res, next) => {
@@ -143,7 +136,18 @@ router.post('/all',  isLoggedIn, fileUploader.single('imageUrl'), (req, res, nex
     const {name, street, houseNumber, zipCode, city, country, telephone, url, tags, description} = req.body
     const liked = false;
 
+    let imageUrl;
+    let publicImageId;
 
+    if (req.file) {
+        imageUrl = req.file.path;
+        publicImageId = req.file.filename
+
+    } else {
+        imageUrl = '';
+        publicImageId = ''
+    }
+    
     // take the individual address information and turn into URL-encoded UTF-8 string
     let restaurantaddress = encodeURI(`${street} ${houseNumber} ${zipCode} ${city} ${country}`)
 
@@ -163,14 +167,14 @@ router.post('/all',  isLoggedIn, fileUploader.single('imageUrl'), (req, res, nex
             geoCoordinates: longLatRestaurant,
             telephone: telephone,
             url: url,
-            imageUrl: req.file.path,
-            publicImageId: req.file.filename,
+            imageUrl: imageUrl,
+            publicImageId: publicImageId,
             tags: tags,
             liked: liked,
             description: description
           })
         .then(restaurantFromDB => {
-            console.log(`Newly created restaurant: ${restaurantFromDB}`);
+            // console.log(`Newly created restaurant: ${restaurantFromDB}`);
             res.redirect('/all')
         })
         .catch(err => {
@@ -180,14 +184,6 @@ router.post('/all',  isLoggedIn, fileUploader.single('imageUrl'), (req, res, nex
     .catch(error => console.log(error))
 })
 
-// Display site - "my restaurant"
-router.get("/my-restaurants", (req, res, next) => {
-    const userId = req.user._id
-    const user = req.user
-    User.findOne({ userId }).then((found) => { 
-    res.render("restaurants/my-restaurants", {user: user})
- })   
-});
 
 // Display site - "edit a restaurant"
 router.get('/all/edit/:id',  isLoggedIn, (req, res, next) => { 
@@ -196,7 +192,7 @@ router.get('/all/edit/:id',  isLoggedIn, (req, res, next) => {
   const id = req.params.id
 	Restaurant.findById(id)
 		.then(restaurantFromDB => {
-      console.log(restaurantFromDB, newTags)
+            // console.log(restaurantFromDB, newTags)
 			res.render('restaurants/edit-restaurant', { restaurant: restaurantFromDB, newTags: newTags, user: user})
 		})
 		.catch(err => {
@@ -221,7 +217,7 @@ router.post('/all/edit/:id',  isLoggedIn, fileUploader.single('imageUrl'), (req,
         cloudinary.uploader.destroy(existingPublicImageId)
         
         // if a new image has been uploaded (req.file === true), 
-        // make the imageUrl the new path and update the publicImageId to the new one as well
+        // make imageUrl the new path and update the publicImageId to the new one as well
         imageUrl = req.file.path;
         publicImageId = req.file.filename
 
@@ -256,8 +252,8 @@ router.post('/all/edit/:id',  isLoggedIn, fileUploader.single('imageUrl'), (req,
             description: description
         }, { new: true })
         .then( () => {
-            console.log(`Publich Image ID 2: ${publicImageId}`); 
-            res.redirect('/all')
+            // console.log(`Publich Image ID 2: ${publicImageId}`); 
+            res.redirect(`/all/edit/${id}`)
         })
         .catch(err => {
         next(err)
@@ -267,54 +263,84 @@ router.post('/all/edit/:id',  isLoggedIn, fileUploader.single('imageUrl'), (req,
 
 // Add a restaurant to the users favorite list ('my-restaurants')
 router.get('/all/add-favorite/:id',  isLoggedIn, (req, res, next) => {
-   
+    
     const user = req.user
     const restaurantId = req.params.id
-
+    
     // console.log(user.restaurants)
-
-// check if clicked on restaurant in order to add to favorites is already in my-restaurants 
-if(!user.restaurants.includes(restaurantId)) {
-    Restaurant.findByIdAndUpdate(restaurantId,  {liked: true })
-    .then(restaurantFromDB => {
-      User.findByIdAndUpdate(user._id, {
-            $push: {restaurants: restaurantFromDB},    
-        },)
-        .then((updatedUser)=>{
-            res.redirect('/all')
-            console.log("ADDED TO FAVOROTES")
+    
+    // check if clicked on restaurant in order to add to favorites is already in my-restaurants 
+    if(!user.restaurants.includes(restaurantId)) {
+        Restaurant.findByIdAndUpdate(restaurantId,  {liked: true })
+        .then(restaurantFromDB => {
+            User.findByIdAndUpdate(user._id, {
+                $push: {restaurants: restaurantFromDB},    
+            },)
+            .then((updatedUser)=>{
+                res.redirect('/all')
+                // console.log("ADDED TO FAVOROTES")
+            })
+            .catch(err => {
+                next(err)
+            })
+        })
+    } else {
+        Restaurant.find()
+        .then(restaurantFromDB => {
+        //   console.log("Dieses restuarnat ist schon in der db")
+        res.render('restaurants/all', {restaurants: restaurantFromDB,  message: 'This restaurant is already on your list', newTags: newTags, user: user })
         })
         .catch(err => {
             next(err)
         })
-    })
-} else {
-    Restaurant.find()
-    .then(restaurantFromDB => {
-      console.log("Dieses restuarnat ist schon in der db")
-      res.render('restaurants/all', {restaurants: restaurantFromDB,  message: 'This restaurant is already on your list', newTags: newTags, user: user })
+    }
+})
+
+// Remove a restaurant to the users favorite list ('my-restaurants')
+router.get('/all/remove/:id',  isLoggedIn, (req, res, next) =>{
+    const userId = req.user._id
+    const restaurantId = req.params.id
+
+   // console.log(req.user.restaurants)
+    User.findById(userId)
+    .then(userFromDB => {
+
+       const filteredRestaurants =  userFromDB.restaurants.filter((restaurant) => {
+
+            if(restaurant.toString() === restaurantId) {
+             return false
+            } else {
+                return true
+            }
+        })
+
+        userFromDB.restaurants = filteredRestaurants
+
+        userFromDB.save()
+
+        .then(savedObject => {
+            Restaurant.findByIdAndUpdate(restaurantId,  {liked: false })
+            .then(updatedLiked => {
+                console.log(updatedLiked)
+            })
+            res.redirect('/my-restaurants')
+        })
     })
     .catch(err => {
         next(err)
     })
-}
 })
-
 
 // Delete a restaurant
 router.get('/all/delete/:id',  isLoggedIn, (req, res, next) =>{
-
     const id = req.params.id
+
     Restaurant.findByIdAndDelete(id)
     .then (deletedRestaurant => {
         
-
         if (deletedRestaurant.imageUrl) {
             // we also delete the image on cloudinary
             cloudinary.uploader.destroy(deletedRestaurant.publicImageId)
-            console.log(deletedRestaurant.imageUrl);
-            console.log(deletedRestaurant.publicImageId);
-            console.log('Console Log nach dem Löschen');
         }
         res.redirect('/all')
     })
@@ -327,8 +353,7 @@ router.get('/all/delete/:id',  isLoggedIn, (req, res, next) =>{
 
 // Get the restaurant data incl. the coordinates in a json format [NEW VERSION]
 router.post('/restaurant-data', (req, res, next) => {
-    console.log(req.body);
-
+    
     Restaurant.find({
         '_id': { $in:
             req.body.idArr
@@ -385,44 +410,5 @@ router.get('/details/restaurant-data/:id', isLoggedIn, (req, res, next) => {
 
 /* --------------------------------------------- routes for Maps END -----------------------------------*/
 
-
-router.get('/all/remove/:id',  isLoggedIn, (req, res, next) =>{
-    const userId = req.user._id
-
-    const restaurantId = req.params.id
-
-   // console.log(req.user.restaurants)
-    User.findById(userId)
-    .then(userFromDB => {
-
-
-       const filteredRestaurants =  userFromDB.restaurants.filter((restaurant) => {
-
-            if(restaurant.toString() === restaurantId) {
-             return false
-            } else {
-                return true
-            }
-    
-        })
-
-
-        userFromDB.restaurants = filteredRestaurants
-
-        userFromDB.save()
-
-        .then(savedObject => {
-            Restaurant.findByIdAndUpdate(restaurantId,  {liked: false })
-            .then(updatedLiked => {
-                // console.log(updatedLiked)
-            })
-
-            res.redirect('/my-restaurants')
-        })
-    })
-    .catch(err => {
-        next(err)
-    })
-})
 
 module.exports = router;
